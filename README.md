@@ -175,7 +175,7 @@ npm run dev
 
 | Роль | Email | Пароль |
 |------|-------|--------|
-| Администратор | admin@x5.ru | admin |
+| Администратор | admin | admin |
 
 
 ## 📡 API документация
@@ -229,23 +229,19 @@ GET  /api/v1/applications/me       # Получить свою заявку
 ### Админ-панель (требует `is_admin=true`)
 
 ```http
-# Аналитика
 GET  /api/v1/admin/analytics       # Статистика мероприятия
 GET  /api/v1/admin/users           # Список пользователей
 GET  /api/v1/admin/applications    # Все заявки
 GET  /api/v1/admin/applications/{id}/resume # Скачать резюме
 
-# Настройки
 GET  /api/v1/admin/settings        # Получить настройки
 PATCH /api/v1/admin/settings       # Обновить настройки
 
-# Призы
 GET    /api/v1/admin/prizes        # Список призов
 POST   /api/v1/admin/prizes        # Создать приз
 PUT    /api/v1/admin/prizes/{id}   # Обновить приз
 DELETE /api/v1/admin/prizes/{id}   # Удалить приз
 
-# Тестовые вопросы
 GET    /api/v1/admin/questions     # Список вопросов
 POST   /api/v1/admin/questions     # Создать вопрос
 PUT    /api/v1/admin/questions/{id} # Обновить вопрос
