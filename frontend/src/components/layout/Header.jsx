@@ -2,6 +2,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useUserStore } from '../../stores/userStore'
 import styles from './Header.module.css'
 
+// X5 logo from Figma
+const x5Logo = 'https://www.figma.com/api/mcp/asset/5fdb9a52-c1d9-4b78-8be6-233cb3364e25'
+const raccoonIcon = 'https://www.figma.com/api/mcp/asset/f7a133a4-fa94-4d0a-8969-4205924e62de'
+
 function Header() {
   const navigate = useNavigate()
   const { user, points, logout } = useUserStore()
@@ -15,7 +19,8 @@ function Header() {
     <header className={styles.header}>
       <div className={styles.container}>
         <Link to="/dashboard" className={styles.logo}>
-          <span className={styles.logoX5}>X5</span>
+          <img src={x5Logo} alt="X5" className={styles.logoIcon} />
+          <div className={styles.logoSeparator}></div>
           <span className={styles.logoText}>For Students</span>
         </Link>
 
@@ -30,7 +35,7 @@ function Header() {
 
         <div className={styles.userSection}>
           <div className={styles.points}>
-            <span className={styles.pointsIcon}>⭐</span>
+            <img src={raccoonIcon} alt="" className={styles.pointsIcon} />
             <span className={styles.pointsValue}>{points}</span>
           </div>
           
@@ -47,4 +52,3 @@ function Header() {
 }
 
 export default Header
-

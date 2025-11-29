@@ -2,14 +2,20 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useUserStore } from '../../stores/userStore'
-import Card from '../../components/ui/Card'
-import Button from '../../components/ui/Button'
-import Input from '../../components/ui/Input'
 import styles from './AuthPage.module.css'
+
+// Decorative images from Figma design
+const decorImages = {
+  lettuce: 'https://www.figma.com/api/mcp/asset/340426f7-1dba-4d62-92f4-ea2f174d3b2a',
+  bagel: 'https://www.figma.com/api/mcp/asset/9d5feba5-5917-4c50-bc39-92c7dd32ff9c',
+  cheese: 'https://www.figma.com/api/mcp/asset/87edd3b9-338a-420c-884c-e53f8de26c1b',
+  radish: 'https://www.figma.com/api/mcp/asset/120886b8-7e68-4ca8-a958-f49caaf3b245',
+  x5Logo: 'https://www.figma.com/api/mcp/asset/cedcfbe2-7761-4456-a974-594f55d2ca26',
+}
 
 function RegisterPage() {
   const navigate = useNavigate()
-  const register = useUserStore((state) => state.register)
+  const { register, loading, error, clearError } = useUserStore()
   
   const [formData, setFormData] = useState({
     email: '',
@@ -41,12 +47,15 @@ function RegisterPage() {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    clearError()
     
     if (validate()) {
-      register(formData.email, formData.password)
-      navigate('/test')
+      const success = await register(formData.email, formData.password)
+      if (success) {
+        navigate('/dashboard')
+      }
     }
   }
 
@@ -59,10 +68,54 @@ function RegisterPage() {
 
   return (
     <div className={styles.page}>
+      {/* Background decorations */}
       <div className={styles.background}>
+        <img 
+          src={decorImages.lettuce} 
+          alt="" 
+          className={`${styles.decorImage} ${styles.decorImage1}`}
+        />
+        <img 
+          src={decorImages.bagel} 
+          alt="" 
+          className={`${styles.decorImage} ${styles.decorImage2}`}
+          style={{ 
+            width: '220px', 
+            height: '220px',
+            bottom: '15%',
+            left: '5%',
+          }}
+        />
+        <img 
+          src={decorImages.cheese} 
+          alt="" 
+          className={`${styles.decorImage} ${styles.decorImage3}`}
+          style={{
+            width: '250px',
+            height: '250px',
+            top: '40%',
+            right: '-30px',
+          }}
+        />
+        <img 
+          src={decorImages.radish} 
+          alt="" 
+          className={`${styles.decorImage} ${styles.decorImage4}`}
+          style={{
+            width: '280px',
+            height: '280px',
+            bottom: '-40px',
+            left: '10%',
+          }}
+        />
+        
+        {/* Geometric shapes */}
         <div className={styles.shape1}></div>
         <div className={styles.shape2}></div>
-        <div className={styles.shape3}></div>
+        
+        {/* Star decorations */}
+        <div className={`${styles.star} ${styles.star1}`}></div>
+        <div className={`${styles.star} ${styles.star2}`}></div>
       </div>
       
       <motion.div
@@ -71,62 +124,119 @@ function RegisterPage() {
         transition={{ duration: 0.5 }}
         className={styles.container}
       >
-        <div className={styles.logoSection}>
-          <h1 className={styles.logo}>
-            <span className={styles.logoX5}>X5</span>
-            <span className={styles.logoText}>For Students</span>
-          </h1>
+        {/* Header with logo */}
+        <div className={styles.header}>
+          <img src={decorImages.x5Logo} alt="X5" className={styles.logoIcon} />
+          <div className={styles.logoSeparator}></div>
+          <span className={styles.logoText}>For students</span>
         </div>
 
-        <Card variant="elevated" padding="large" className={styles.card}>
-          <h2 className={styles.title}>Регистрация</h2>
-          <p className={styles.subtitle}>
-            Создайте аккаунт для участия
-          </p>
-
-          <form onSubmit={handleSubmit} className={styles.form}>
-            <Input
-              label="Email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange('email')}
-              error={errors.email}
-              placeholder="example@mail.ru"
-              fullWidth
-            />
+        {/* Main card */}
+        <motion.div 
+          className={styles.card}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <div className={styles.cardInner}>
+            <p className={styles.title}>Почта</p>
             
-            <Input
-              label="Пароль"
-              type="password"
-              value={formData.password}
-              onChange={handleChange('password')}
-              error={errors.password}
-              placeholder="Минимум 6 символов"
-              fullWidth
-            />
-            
-            <Input
-              label="Подтвердите пароль"
-              type="password"
-              value={formData.confirmPassword}
-              onChange={handleChange('confirmPassword')}
-              error={errors.confirmPassword}
-              placeholder="Повторите пароль"
-              fullWidth
-            />
+            {error && (
+              <div className={styles.errorMessage}>
+                {error}
+              </div>
+            )}
 
-            <Button type="submit" variant="primary" size="large" fullWidth>
-              Зарегистрироваться
-            </Button>
-          </form>
+            <form onSubmit={handleSubmit} className={styles.form}>
+              <input
+                type="email"
+                value={formData.email}
+                onChange={handleChange('email')}
+                placeholder="example@mail.ru"
+                className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
+                style={{
+                  width: '264px',
+                  height: '35px',
+                  backgroundColor: '#fff6ea',
+                  border: 'none',
+                  borderRadius: '5px',
+                  padding: '0 12px',
+                  fontSize: '15px',
+                  color: '#05320a',
+                }}
+              />
+              {errors.email && <span className={styles.errorText}>{errors.email}</span>}
+              
+              <p className={styles.title} style={{ marginTop: '16px' }}>Придумай пароль</p>
+              <input
+                type="password"
+                value={formData.password}
+                onChange={handleChange('password')}
+                placeholder="Минимум 6 символов"
+                className={`${styles.input} ${errors.password ? styles.inputError : ''}`}
+                style={{
+                  width: '264px',
+                  height: '35px',
+                  backgroundColor: '#fff6ea',
+                  border: 'none',
+                  borderRadius: '5px',
+                  padding: '0 12px',
+                  fontSize: '15px',
+                  color: '#05320a',
+                }}
+              />
+              {errors.password && <span className={styles.errorText}>{errors.password}</span>}
+              
+              <p className={styles.title} style={{ marginTop: '16px' }}>Подтверди пароль</p>
+              <input
+                type="password"
+                value={formData.confirmPassword}
+                onChange={handleChange('confirmPassword')}
+                placeholder="Повтори пароль"
+                className={`${styles.input} ${errors.confirmPassword ? styles.inputError : ''}`}
+                style={{
+                  width: '264px',
+                  height: '35px',
+                  backgroundColor: '#fff6ea',
+                  border: 'none',
+                  borderRadius: '5px',
+                  padding: '0 12px',
+                  fontSize: '15px',
+                  color: '#05320a',
+                }}
+              />
+              {errors.confirmPassword && <span className={styles.errorText}>{errors.confirmPassword}</span>}
 
-          <p className={styles.linkText}>
-            Уже есть аккаунт?{' '}
-            <Link to="/login" className={styles.link}>
-              Войти
-            </Link>
-          </p>
-        </Card>
+              <div className={styles.buttons}>
+                <button 
+                  type="submit" 
+                  disabled={loading}
+                  style={{
+                    width: '264px',
+                    height: '28px',
+                    backgroundColor: '#c3eb91',
+                    color: '#05320a',
+                    border: 'none',
+                    borderRadius: '5px',
+                    fontWeight: 'bold',
+                    fontSize: '15px',
+                    cursor: 'pointer',
+                    marginTop: '16px',
+                  }}
+                >
+                  {loading ? 'Регистрация...' : 'Зарегистрироваться'}
+                </button>
+              </div>
+            </form>
+
+            <p className={styles.linkText}>
+              Уже есть аккаунт?{' '}
+              <Link to="/login" className={styles.link}>
+                Войти
+              </Link>
+            </p>
+          </div>
+        </motion.div>
 
         <Link to="/" className={styles.backLink}>
           ← Назад
@@ -137,4 +247,3 @@ function RegisterPage() {
 }
 
 export default RegisterPage
-

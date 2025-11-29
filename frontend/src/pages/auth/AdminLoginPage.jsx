@@ -9,14 +9,13 @@ import styles from './AuthPage.module.css'
 
 function AdminLoginPage() {
   const navigate = useNavigate()
-  const adminLogin = useUserStore((state) => state.adminLogin)
+  const { adminLogin, loading, error, clearError } = useUserStore()
   
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   })
   const [errors, setErrors] = useState({})
-  const [loginError, setLoginError] = useState('')
 
   const validate = () => {
     const newErrors = {}
@@ -33,16 +32,14 @@ function AdminLoginPage() {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setLoginError('')
+    clearError()
     
     if (validate()) {
-      const success = adminLogin(formData.username, formData.password)
+      const success = await adminLogin(formData.username, formData.password)
       if (success) {
         navigate('/admin')
-      } else {
-        setLoginError('Неверный логин или пароль администратора')
       }
     }
   }
@@ -52,7 +49,7 @@ function AdminLoginPage() {
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: null }))
     }
-    setLoginError('')
+    clearError()
   }
 
   return (
@@ -82,9 +79,9 @@ function AdminLoginPage() {
             Введите данные администратора
           </p>
 
-          {loginError && (
+          {error && (
             <div className={styles.errorMessage}>
-              {loginError}
+              {error}
             </div>
           )}
 
@@ -109,8 +106,8 @@ function AdminLoginPage() {
               fullWidth
             />
 
-            <Button type="submit" variant="primary" size="large" fullWidth>
-              Войти как администратор
+            <Button type="submit" variant="primary" size="large" fullWidth disabled={loading}>
+              {loading ? 'Вход...' : 'Войти как администратор'}
             </Button>
           </form>
         </Card>

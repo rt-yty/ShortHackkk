@@ -51,7 +51,7 @@ function shuffleArray(array) {
 
 function ColorMatchGame() {
   const navigate = useNavigate()
-  const { completedGame, completeGame } = useUserStore()
+  const { completedGame, completeGame, loading } = useUserStore()
   
   const [gameState, setGameState] = useState('intro') // intro, playing, roundComplete, finished
   const [currentRound, setCurrentRound] = useState(0)
@@ -64,6 +64,7 @@ function ColorMatchGame() {
   const [wrongMatch, setWrongMatch] = useState(false)
   const [startTime, setStartTime] = useState(null)
   const [totalTime, setTotalTime] = useState(0)
+  const [earnedPoints, setEarnedPoints] = useState(0)
 
   // Redirect if already completed
   if (completedGame && gameState === 'intro') {
@@ -109,12 +110,13 @@ function ColorMatchGame() {
     }
   }
 
-  const checkMatch = (color, name) => {
+  const checkMatch = async (color, name) => {
     if (color.name === name) {
       // Correct match
       const newMatches = [...matches, { ...color }]
       setMatches(newMatches)
-      setScore(prev => prev + 10)
+      const newScore = score + 10
+      setScore(newScore)
       setSelectedColor(null)
       setSelectedName(null)
       
@@ -126,7 +128,12 @@ function ColorMatchGame() {
           // Game finished
           setTotalTime(Math.floor((Date.now() - startTime) / 1000))
           setGameState('finished')
-          completeGame(score + 10)
+          const result = await completeGame('color_match', newScore)
+          if (result) {
+            setEarnedPoints(result.points_earned)
+          } else {
+            setEarnedPoints(25 + Math.min(Math.floor(newScore / 2), 25))
+          }
         }
       }
     } else {
@@ -227,7 +234,7 @@ function ColorMatchGame() {
             
             <div className={styles.pointsEarned}>
               <span className={styles.pointsIcon}>⭐</span>
-              <span>+{25 + Math.min(Math.floor(score / 2), 25)} баллов</span>
+              <span>+{earnedPoints || (25 + Math.min(Math.floor(score / 2), 25))} баллов</span>
             </div>
 
             <div className={styles.actions}>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import * as XLSX from 'xlsx'
@@ -19,13 +19,29 @@ function AdminDashboard() {
     prizes, updatePrize, addPrize, removePrize,
     welcomeText, setWelcomeText,
     resetToDefaults,
+    fetchPrizes,
+    fetchEventSettings,
+    loading,
   } = useAdminStore()
   const { getAnalytics, getExportData } = useAnalyticsStore()
 
   const [activeTab, setActiveTab] = useState('analytics')
   const [editingPrize, setEditingPrize] = useState(null)
   const [isAddPrizeModalOpen, setIsAddPrizeModalOpen] = useState(false)
-  const [newPrize, setNewPrize] = useState({ name: '', points: '', description: '' })
+  const [newPrize, setNewPrize] = useState({ name: '', points: '', quantity: '', description: '' })
+  const [isInitialized, setIsInitialized] = useState(false)
+
+  // Загружаем данные при монтировании
+  useEffect(() => {
+    const loadData = async () => {
+      await Promise.all([
+        fetchPrizes(),
+        fetchEventSettings(),
+      ])
+      setIsInitialized(true)
+    }
+    loadData()
+  }, [fetchPrizes, fetchEventSettings])
 
   const analytics = getAnalytics()
 
@@ -64,9 +80,10 @@ function AdminDashboard() {
       addPrize({
         name: newPrize.name,
         points: parseInt(newPrize.points),
+        quantity: parseInt(newPrize.quantity) || 0,
         description: newPrize.description,
       })
-      setNewPrize({ name: '', points: '', description: '' })
+      setNewPrize({ name: '', points: '', quantity: '', description: '' })
       setIsAddPrizeModalOpen(false)
     }
   }
@@ -227,6 +244,15 @@ function AdminDashboard() {
                 </Button>
               </div>
 
+              {!isInitialized ? (
+                <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+                  Загрузка призов...
+                </div>
+              ) : prizes.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+                  Призов пока нет. Добавьте первый приз!
+                </div>
+              ) : (
               <div className={styles.prizesList}>
                 {prizes.map((prize) => (
                   <Card key={prize.id} variant="default" padding="medium" className={styles.prizeItem}>
@@ -238,13 +264,22 @@ function AdminDashboard() {
                           onChange={(e) => setEditingPrize({ ...editingPrize, name: e.target.value })}
                           fullWidth
                         />
-                        <Input
-                          label="Баллы"
-                          type="number"
-                          value={editingPrize.points}
-                          onChange={(e) => setEditingPrize({ ...editingPrize, points: parseInt(e.target.value) })}
-                          fullWidth
-                        />
+                        <div className={styles.prizeEditRow}>
+                          <Input
+                            label="Баллы"
+                            type="number"
+                            value={editingPrize.points}
+                            onChange={(e) => setEditingPrize({ ...editingPrize, points: parseInt(e.target.value) || 0 })}
+                            fullWidth
+                          />
+                          <Input
+                            label="Количество"
+                            type="number"
+                            value={editingPrize.quantity}
+                            onChange={(e) => setEditingPrize({ ...editingPrize, quantity: parseInt(e.target.value) || 0 })}
+                            fullWidth
+                          />
+                        </div>
                         <Input
                           label="Описание"
                           value={editingPrize.description}
@@ -268,6 +303,12 @@ function AdminDashboard() {
                             <h4 className={styles.prizeName}>{prize.name}</h4>
                             <p className={styles.prizeDescription}>{prize.description}</p>
                           </div>
+                          <div className={styles.prizeQuantity}>
+                            <span className={styles.quantityLabel}>В наличии:</span>
+                            <span className={`${styles.quantityValue} ${prize.quantity === 0 ? styles.outOfStock : ''}`}>
+                              {prize.quantity} шт.
+                            </span>
+                          </div>
                         </div>
                         <div className={styles.prizeActions}>
                           <Button variant="ghost" size="small" onClick={() => setEditingPrize(prize)}>
@@ -282,6 +323,7 @@ function AdminDashboard() {
                   </Card>
                 ))}
               </div>
+              )}
             </motion.div>
           )}
         </div>
@@ -300,14 +342,24 @@ function AdminDashboard() {
             placeholder="Название приза"
             fullWidth
           />
-          <Input
-            label="Баллы"
-            type="number"
-            value={newPrize.points}
-            onChange={(e) => setNewPrize({ ...newPrize, points: e.target.value })}
-            placeholder="Количество баллов"
-            fullWidth
-          />
+          <div className={styles.addPrizeRow}>
+            <Input
+              label="Баллы"
+              type="number"
+              value={newPrize.points}
+              onChange={(e) => setNewPrize({ ...newPrize, points: e.target.value })}
+              placeholder="Кол-во баллов"
+              fullWidth
+            />
+            <Input
+              label="Количество"
+              type="number"
+              value={newPrize.quantity}
+              onChange={(e) => setNewPrize({ ...newPrize, quantity: e.target.value })}
+              placeholder="Штук в наличии"
+              fullWidth
+            />
+          </div>
           <Input
             label="Описание"
             value={newPrize.description}

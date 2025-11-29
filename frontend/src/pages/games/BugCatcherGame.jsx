@@ -11,7 +11,7 @@ const BUG_EMOJIS = ['🐛', '🐜', '🪲', '🦗', '🕷️']
 
 function BugCatcherGame() {
   const navigate = useNavigate()
-  const { completedGame, completeGame } = useUserStore()
+  const { completedGame, completeGame, loading } = useUserStore()
   const gameAreaRef = useRef(null)
   
   const [gameState, setGameState] = useState('intro') // intro, playing, finished
@@ -19,6 +19,7 @@ function BugCatcherGame() {
   const [score, setScore] = useState(0)
   const [bugs, setBugs] = useState([])
   const [spawnRate, setSpawnRate] = useState(2000)
+  const [earnedPoints, setEarnedPoints] = useState(0)
 
   // Redirect if already completed
   if (completedGame && gameState === 'intro') {
@@ -61,10 +62,16 @@ function BugCatcherGame() {
     setSpawnRate(2000)
   }
 
-  const endGame = useCallback(() => {
+  const endGame = useCallback(async () => {
     setGameState('finished')
     setBugs([])
-    completeGame(score)
+    const result = await completeGame('bug_catcher', score)
+    if (result) {
+      setEarnedPoints(result.points_earned)
+    } else {
+      // Fallback: расчёт баллов локально
+      setEarnedPoints(25 + Math.min(Math.floor(score / 2), 25))
+    }
   }, [score, completeGame])
 
   // Timer
@@ -159,7 +166,7 @@ function BugCatcherGame() {
             
             <div className={styles.pointsEarned}>
               <span className={styles.pointsIcon}>⭐</span>
-              <span>+{25 + Math.min(Math.floor(score / 2), 25)} баллов</span>
+              <span>+{earnedPoints || (25 + Math.min(Math.floor(score / 2), 25))} баллов</span>
             </div>
 
             <div className={styles.actions}>

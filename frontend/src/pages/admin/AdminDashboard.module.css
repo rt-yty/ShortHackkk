@@ -1,14 +1,15 @@
 .page {
   min-height: 100vh;
-  background-color: var(--color-gray-100);
+  background-color: var(--color-primary);
 }
 
 .header {
-  background-color: var(--color-white);
-  box-shadow: var(--shadow-sm);
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: var(--z-dropdown);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .headerContent {
@@ -29,13 +30,13 @@
 .logoX5 {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
+  color: var(--color-accent);
 }
 
 .logoText {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-medium);
-  color: var(--color-gray-700);
+  color: var(--color-white);
 }
 
 .container {
@@ -49,10 +50,10 @@
   display: flex;
   gap: var(--spacing-xs);
   margin-bottom: var(--spacing-xl);
-  background-color: var(--color-white);
+  background-color: var(--glass-bg);
   padding: var(--spacing-xs);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(10px);
 }
 
 .tab {
@@ -62,26 +63,26 @@
   background: none;
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
-  color: var(--color-gray-500);
+  color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
 }
 
 .tab:hover {
-  background-color: var(--color-gray-100);
-  color: var(--color-gray-700);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
 }
 
 .tab.active {
-  background-color: var(--color-primary);
-  color: var(--color-white);
+  background-color: var(--color-accent);
+  color: var(--color-text-dark);
 }
 
 /* Content */
 .sectionTitle {
   font-size: var(--font-size-2xl);
-  color: var(--color-black);
+  color: var(--color-white);
   margin-bottom: var(--spacing-lg);
 }
 
@@ -102,6 +103,8 @@
 
 .analyticsCard {
   text-align: center;
+  background: var(--color-cream) !important;
+  border: none !important;
 }
 
 .analyticsIcon {
@@ -113,12 +116,13 @@
   justify-content: center;
   margin: 0 auto var(--spacing-md);
   font-size: 28px;
+  background: var(--color-accent);
 }
 
 .analyticsValue {
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-bold);
-  color: var(--color-black);
+  color: var(--color-text-dark);
 }
 
 .analyticsLabel {
@@ -128,11 +132,13 @@
 
 .usersCard {
   margin-top: var(--spacing-xl);
+  background: var(--color-cream) !important;
+  border: none !important;
 }
 
 .usersTitle {
   font-size: var(--font-size-lg);
-  color: var(--color-black);
+  color: var(--color-text-dark);
   margin-bottom: var(--spacing-md);
 }
 
@@ -149,7 +155,7 @@
 .usersTable td {
   padding: var(--spacing-sm) var(--spacing-md);
   text-align: left;
-  border-bottom: 1px solid var(--color-gray-200);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .usersTable th {
@@ -173,6 +179,8 @@
 /* Settings */
 .settingsCard {
   max-width: 600px;
+  background: var(--color-cream) !important;
+  border: none !important;
 }
 
 .settingGroup {
@@ -183,29 +191,31 @@
   display: block;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--color-gray-700);
+  color: var(--color-text-dark);
   margin-bottom: var(--spacing-xs);
 }
 
 .textarea {
   width: 100%;
   padding: var(--spacing-sm) var(--spacing-md);
-  border: 2px solid var(--color-gray-300);
-  border-radius: var(--radius-md);
+  border: none;
+  border-radius: var(--radius-sm);
   font-size: var(--font-size-base);
   font-family: inherit;
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--color-text-dark);
   resize: vertical;
   transition: all var(--transition-fast);
 }
 
 .textarea:focus {
   outline: none;
-  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(195, 235, 145, 0.3);
 }
 
 .settingActions {
   padding-top: var(--spacing-lg);
-  border-top: 1px solid var(--color-gray-200);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 /* Prizes */
@@ -224,6 +234,8 @@
 
 .prizeItem {
   transition: all var(--transition-fast);
+  background: var(--color-cream) !important;
+  border: none !important;
 }
 
 .prizeView {
@@ -242,13 +254,13 @@
 .prizePoints {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
+  color: var(--color-accent-dark);
   min-width: 80px;
 }
 
 .prizeName {
   font-size: var(--font-size-base);
-  color: var(--color-black);
+  color: var(--color-text-dark);
   margin-bottom: var(--spacing-xs);
 }
 
@@ -274,10 +286,48 @@
   margin-top: var(--spacing-sm);
 }
 
+/* Prize Quantity */
+.prizeQuantity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-accent);
+  border-radius: var(--radius-md);
+  min-width: 100px;
+}
+
+.quantityLabel {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-dark);
+}
+
+.quantityValue {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-success);
+}
+
+.quantityValue.outOfStock {
+  color: var(--color-error);
+}
+
+.prizeEditRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
 /* Add Prize Modal */
 .addPrizeForm {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.addPrizeRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: var(--spacing-md);
 }
 
@@ -299,4 +349,3 @@
     flex: 1;
   }
 }
-

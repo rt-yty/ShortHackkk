@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useUserStore } from './stores/userStore'
 
@@ -22,7 +23,34 @@ import ProtectedRoute from './components/ProtectedRoute'
 import AdminRoute from './components/AdminRoute'
 
 function App() {
-  const { isAuthenticated, isAdmin } = useUserStore()
+  const { isAuthenticated, isAdmin, initializeAuth } = useUserStore()
+  const [isInitializing, setIsInitializing] = useState(true)
+
+  // Инициализация авторизации при загрузке приложения
+  useEffect(() => {
+    const init = async () => {
+      await initializeAuth()
+      setIsInitializing(false)
+    }
+    init()
+  }, [initializeAuth])
+
+  // Показываем загрузку пока инициализируемся
+  if (isInitializing) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+        color: '#fff',
+        fontSize: '1.2rem'
+      }}>
+        Загрузка...
+      </div>
+    )
+  }
 
   return (
     <Routes>

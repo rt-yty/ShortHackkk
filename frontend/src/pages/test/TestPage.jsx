@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useUserStore } from '../../stores/userStore'
 import { useAdminStore } from '../../stores/adminStore'
+import { testApi } from '../../api/api'
 import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import ProgressBar from '../../components/ui/ProgressBar'
@@ -10,12 +11,34 @@ import styles from './TestPage.module.css'
 
 function TestPage() {
   const navigate = useNavigate()
-  const { completedTest, completeTest, skipTest } = useUserStore()
-  const { testQuestions } = useAdminStore()
+  const { completedTest, completeTest, skipTest, loading } = useUserStore()
+  const { testQuestions, fetchTestQuestions } = useAdminStore()
   
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState([])
   const [selectedOption, setSelectedOption] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Загружаем вопросы при монтировании
+  useEffect(() => {
+    const loadQuestions = async () => {
+      try {
+        // Пробуем загрузить через API для авторизованного пользователя
+        const questions = await testApi.getQuestions()
+        if (questions.length === 0) {
+          await fetchTestQuestions()
+        } else {
+          // Обновляем store
+          await fetchTestQuestions()
+        }
+      } catch (error) {
+        // Fallback на данные из adminStore
+        await fetchTestQuestions()
+      }
+      setIsLoading(false)
+    }
+    loadQuestions()
+  }, [fetchTestQuestions])
 
   // Redirect if already completed
   if (completedTest) {
@@ -23,11 +46,24 @@ function TestPage() {
     return null
   }
 
+  // Показываем загрузку
+  if (isLoading || testQuestions.length === 0) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.container}>
+          <div style={{ textAlign: 'center', padding: '2rem' }}>
+            Загрузка вопросов...
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   const handleAnswer = (option) => {
     setSelectedOption(option)
   }
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (selectedOption === null) return
     
     const newAnswers = [...answers, selectedOption]
@@ -42,13 +78,13 @@ function TestPage() {
       const designerScore = newAnswers.filter(a => a === 'designer').length
       const result = developerScore >= designerScore ? 'developer' : 'designer'
       
-      completeTest(result)
+      await completeTest(result)
       navigate('/test/result')
     }
   }
 
-  const handleSkip = () => {
-    skipTest()
+  const handleSkip = async () => {
+    await skipTest()
     navigate('/direction-select')
   }
 

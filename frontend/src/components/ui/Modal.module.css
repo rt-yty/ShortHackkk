@@ -11,13 +11,13 @@
 .backdrop {
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(15, 90, 5, 0.7);
   backdrop-filter: blur(4px);
 }
 
 .modal {
   position: relative;
-  background-color: var(--color-white);
+  background-color: var(--color-cream);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
   max-height: 90vh;
@@ -45,13 +45,13 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-lg);
-  border-bottom: 1px solid var(--color-gray-200);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .title {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
-  color: var(--color-black);
+  color: var(--color-text-dark);
   margin: 0;
 }
 
@@ -62,20 +62,19 @@
   width: 32px;
   height: 32px;
   border: none;
-  background-color: var(--color-gray-100);
+  background-color: var(--color-accent);
   border-radius: var(--radius-full);
   font-size: var(--font-size-lg);
-  color: var(--color-gray-500);
+  color: var(--color-text-dark);
   cursor: pointer;
   transition: all var(--transition-fast);
 }
 
 .closeButton:hover {
-  background-color: var(--color-gray-200);
-  color: var(--color-black);
+  background-color: var(--color-accent-dark);
+  color: var(--color-white);
 }
 
 .content {
   padding: var(--spacing-lg);
 }
-

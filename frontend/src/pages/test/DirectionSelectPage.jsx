@@ -7,7 +7,7 @@ import styles from './DirectionSelectPage.module.css'
 
 function DirectionSelectPage() {
   const navigate = useNavigate()
-  const { testResult, setDirection, completedGame } = useUserStore()
+  const { testResult, setDirection, completedGame, loading } = useUserStore()
 
   // If test result exists and game not completed, redirect to appropriate game
   if (testResult && !completedGame) {
@@ -16,8 +16,8 @@ function DirectionSelectPage() {
     return null
   }
 
-  const handleSelect = (direction) => {
-    setDirection(direction)
+  const handleSelect = async (direction) => {
+    await setDirection(direction)
     const gamePath = direction === 'developer' ? '/game/bug-catcher' : '/game/color-match'
     navigate(gamePath)
   }

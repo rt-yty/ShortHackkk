@@ -9,7 +9,7 @@ import styles from './ApplicationPage.module.css'
 
 function ApplicationPage() {
   const navigate = useNavigate()
-  const { appliedForInternship, submitApplication, testResult } = useUserStore()
+  const { appliedForInternship, submitApplication, testResult, loading, error, clearError } = useUserStore()
   
   const [formData, setFormData] = useState({
     fullName: '',
@@ -66,12 +66,28 @@ function ApplicationPage() {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    clearError()
     
     if (validate()) {
-      submitApplication(resumeFile?.name || null)
-      setSubmitted(true)
+      // Создаём FormData для отправки
+      const submitData = new FormData()
+      submitData.append('full_name', formData.fullName)
+      submitData.append('email', formData.email)
+      submitData.append('phone', formData.phone)
+      submitData.append('direction', formData.direction)
+      if (formData.motivation) {
+        submitData.append('motivation', formData.motivation)
+      }
+      if (resumeFile) {
+        submitData.append('resume', resumeFile)
+      }
+      
+      const success = await submitApplication(submitData)
+      if (success) {
+        setSubmitted(true)
+      }
     }
   }
 
@@ -226,13 +242,19 @@ function ApplicationPage() {
                 {errors.resume && <span className={styles.error}>{errors.resume}</span>}
               </div>
 
+              {error && (
+                <div className={styles.error} style={{ marginBottom: '1rem', color: '#ef4444' }}>
+                  {error}
+                </div>
+              )}
+
               <div className={styles.submitSection}>
                 <div className={styles.bonusInfo}>
                   <span className={styles.bonusIcon}>⭐</span>
                   <span>+35 баллов за отправку заявки</span>
                 </div>
-                <Button type="submit" variant="primary" size="large" fullWidth>
-                  Отправить заявку
+                <Button type="submit" variant="primary" size="large" fullWidth disabled={loading}>
+                  {loading ? 'Отправка...' : 'Отправить заявку'}
                 </Button>
               </div>
             </form>

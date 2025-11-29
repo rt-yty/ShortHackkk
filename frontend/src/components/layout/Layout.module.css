@@ -2,16 +2,16 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--color-primary);
 }
 
 .main {
   flex: 1;
-  padding: var(--spacing-xl) var(--spacing-md);
+  padding: 0;
 }
 
 @media (min-width: 768px) {
   .main {
-    padding: var(--spacing-2xl) var(--spacing-xl);
+    padding: 0;
   }
 }
-

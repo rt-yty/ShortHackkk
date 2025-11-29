@@ -12,7 +12,7 @@
 .label {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--color-gray-700);
+  color: var(--color-black);
 }
 
 .value {
@@ -22,7 +22,7 @@
 
 .track {
   width: 100%;
-  background-color: var(--color-gray-200);
+  background-color: rgba(255, 255, 255, 0.3);
   border-radius: var(--radius-full);
   overflow: hidden;
 }
@@ -48,14 +48,13 @@
 
 /* Variants */
 .primary {
-  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
 }
 
 .success {
-  background: linear-gradient(90deg, var(--color-success) 0%, #34ce57 100%);
+  background: linear-gradient(90deg, var(--color-success) 0%, #1da800 100%);
 }
 
 .warning {
-  background: linear-gradient(90deg, var(--color-warning) 0%, #ffda3d 100%);
+  background: linear-gradient(90deg, var(--color-white) 0%, var(--color-accent) 100%);
 }
-

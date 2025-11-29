@@ -1,5 +1,5 @@
 .card {
-  background-color: var(--color-white);
+  background-color: var(--color-cream);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-normal);
@@ -7,7 +7,7 @@
 
 /* Variants */
 .default {
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .elevated {
@@ -16,14 +16,21 @@
 
 .outlined {
   background-color: transparent;
-  border: 2px solid var(--color-gray-300);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   box-shadow: none;
 }
 
 .primary {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  background: linear-gradient(135deg, var(--color-accent-dark) 0%, #8ab50d 100%);
   color: var(--color-white);
   border: none;
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  color: var(--color-white);
 }
 
 /* Padding */
@@ -56,4 +63,3 @@
 .clickable:active {
   transform: translateY(0);
 }
-
