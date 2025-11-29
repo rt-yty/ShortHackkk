@@ -108,3 +108,84 @@
 .skipSection a:hover {
   color: var(--color-white);
 }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .page {
+    padding: var(--spacing-md);
+    align-items: flex-start;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .header {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .subtitle {
+    font-size: var(--font-size-base);
+  }
+
+  .questionCard {
+    margin-top: var(--spacing-md);
+  }
+
+  .questionText {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .options {
+    gap: var(--spacing-sm);
+  }
+
+  .option {
+    padding: var(--spacing-sm) var(--spacing-md);
+    gap: var(--spacing-sm);
+  }
+
+  .optionIndicator {
+    font-size: var(--font-size-lg);
+  }
+
+  .optionText {
+    font-size: var(--font-size-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: var(--spacing-sm);
+    padding-top: var(--spacing-md);
+  }
+
+  .title {
+    font-size: var(--font-size-xl);
+  }
+
+  .subtitle {
+    font-size: var(--font-size-sm);
+  }
+
+  .questionText {
+    font-size: var(--font-size-base);
+  }
+
+  .option {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .optionIndicator {
+    font-size: var(--font-size-base);
+  }
+
+  .optionText {
+    font-size: var(--font-size-xs);
+  }
+}

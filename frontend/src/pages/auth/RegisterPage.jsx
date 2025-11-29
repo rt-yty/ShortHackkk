@@ -20,7 +20,6 @@ function RegisterPage() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    confirmPassword: '',
   })
   const [errors, setErrors] = useState({})
 
@@ -37,10 +36,6 @@ function RegisterPage() {
       newErrors.password = 'Введите пароль'
     } else if (formData.password.length < 6) {
       newErrors.password = 'Пароль должен быть не менее 6 символов'
-    }
-    
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Пароли не совпадают'
     }
     
     setErrors(newErrors)
@@ -186,26 +181,6 @@ function RegisterPage() {
                 }}
               />
               {errors.password && <span className={styles.errorText}>{errors.password}</span>}
-              
-              <p className={styles.title} style={{ marginTop: '16px' }}>Подтверди пароль</p>
-              <input
-                type="password"
-                value={formData.confirmPassword}
-                onChange={handleChange('confirmPassword')}
-                placeholder="Повтори пароль"
-                className={`${styles.input} ${errors.confirmPassword ? styles.inputError : ''}`}
-                style={{
-                  width: '264px',
-                  height: '35px',
-                  backgroundColor: '#fff6ea',
-                  border: 'none',
-                  borderRadius: '5px',
-                  padding: '0 12px',
-                  fontSize: '15px',
-                  color: '#05320a',
-                }}
-              />
-              {errors.confirmPassword && <span className={styles.errorText}>{errors.confirmPassword}</span>}
 
               <div className={styles.buttons}>
                 <button 

@@ -11,6 +11,9 @@ import Input from '../../components/ui/Input'
 import Modal from '../../components/ui/Modal'
 import styles from './AdminDashboard.module.css'
 
+// Raccoon icon from Figma
+const raccoonIcon = 'https://www.figma.com/api/mcp/asset/f7a133a4-fa94-4d0a-8969-4205924e62de'
+
 function AdminDashboard() {
   const navigate = useNavigate()
   const { logout } = useUserStore()
@@ -21,6 +24,8 @@ function AdminDashboard() {
     resetToDefaults,
     fetchPrizes,
     fetchEventSettings,
+    fetchApplications,
+    applications,
     loading,
   } = useAdminStore()
   const { getAnalytics, getExportData } = useAnalyticsStore()
@@ -30,6 +35,7 @@ function AdminDashboard() {
   const [isAddPrizeModalOpen, setIsAddPrizeModalOpen] = useState(false)
   const [newPrize, setNewPrize] = useState({ name: '', points: '', quantity: '', description: '' })
   const [isInitialized, setIsInitialized] = useState(false)
+  const [selectedApplication, setSelectedApplication] = useState(null)
 
   // Загружаем данные при монтировании
   useEffect(() => {
@@ -37,11 +43,12 @@ function AdminDashboard() {
       await Promise.all([
         fetchPrizes(),
         fetchEventSettings(),
+        fetchApplications(),
       ])
       setIsInitialized(true)
     }
     loadData()
-  }, [fetchPrizes, fetchEventSettings])
+  }, [fetchPrizes, fetchEventSettings, fetchApplications])
 
   const analytics = getAnalytics()
 
@@ -66,6 +73,28 @@ function AdminDashboard() {
     }
     
     XLSX.writeFile(wb, `x5_analytics_${new Date().toISOString().split('T')[0]}.xlsx`)
+  }
+
+  const handleExportApplications = () => {
+    if (applications.length === 0) return
+
+    const wb = XLSX.utils.book_new()
+    
+    const applicationsData = applications.map((app, index) => ({
+      '№': index + 1,
+      'ФИО': app.full_name,
+      'Email': app.email,
+      'Телефон': app.phone,
+      'Направление': app.direction === 'developer' ? 'Разработчик' : 'Дизайнер',
+      'Мотивация': app.motivation || '',
+      'Резюме': app.resume_path ? 'Есть' : 'Нет',
+      'Дата подачи': new Date(app.created_at).toLocaleString('ru-RU'),
+    }))
+    
+    const ws = XLSX.utils.json_to_sheet(applicationsData)
+    XLSX.utils.book_append_sheet(wb, ws, 'Заявки')
+    
+    XLSX.writeFile(wb, `x5_applications_${new Date().toISOString().split('T')[0]}.xlsx`)
   }
 
   const handleSavePrize = () => {
@@ -116,6 +145,12 @@ function AdminDashboard() {
             onClick={() => setActiveTab('analytics')}
           >
             📊 Аналитика
+          </button>
+          <button
+            className={`${styles.tab} ${activeTab === 'applications' ? styles.active : ''}`}
+            onClick={() => setActiveTab('applications')}
+          >
+            📄 Заявки
           </button>
           <button
             className={`${styles.tab} ${activeTab === 'settings' ? styles.active : ''}`}
@@ -190,6 +225,121 @@ function AdminDashboard() {
                     )}
                   </div>
                 </Card>
+              )}
+            </motion.div>
+          )}
+
+          {activeTab === 'applications' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <div className={styles.applicationsHeader}>
+                <h2 className={styles.sectionTitle}>Заявки на стажировку</h2>
+                <div className={styles.applicationsActions}>
+                  <span className={styles.applicationsCount}>
+                    Всего: {applications.length}
+                  </span>
+                  {applications.length > 0 && (
+                    <Button variant="primary" onClick={handleExportApplications}>
+                      📥 Экспорт в Excel
+                    </Button>
+                  )}
+                </div>
+              </div>
+
+              {!isInitialized ? (
+                <div className={styles.loadingMessage}>
+                  Загрузка заявок...
+                </div>
+              ) : applications.length === 0 ? (
+                <Card variant="default" padding="large" className={styles.emptyCard}>
+                  <div className={styles.emptyState}>
+                    <span className={styles.emptyIcon}>📭</span>
+                    <p>Заявок пока нет</p>
+                  </div>
+                </Card>
+              ) : (
+                <div className={styles.applicationsList}>
+                  {applications.map((app, index) => (
+                    <motion.div
+                      key={app.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <Card variant="default" padding="medium" className={styles.applicationCard}>
+                        <div className={styles.applicationHeader}>
+                          <div className={styles.applicationName}>
+                            <h4>{app.full_name}</h4>
+                            <span className={`${styles.directionBadge} ${styles[app.direction]}`}>
+                              {app.direction === 'developer' ? '💻 Разработчик' : '🎨 Дизайнер'}
+                            </span>
+                          </div>
+                          <div className={styles.applicationDate}>
+                            {new Date(app.created_at).toLocaleString('ru-RU', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                          </div>
+                        </div>
+                        
+                        <div className={styles.applicationContacts}>
+                          <div className={styles.contactItem}>
+                            <span className={styles.contactIcon}>📧</span>
+                            <a href={`mailto:${app.email}`}>{app.email}</a>
+                          </div>
+                          <div className={styles.contactItem}>
+                            <span className={styles.contactIcon}>📱</span>
+                            <a href={`tel:${app.phone}`}>{app.phone}</a>
+                          </div>
+                        </div>
+
+                        {app.motivation && (
+                          <div className={styles.applicationMotivation}>
+                            <span className={styles.motivationLabel}>Мотивация:</span>
+                            <p className={styles.motivationText}>
+                              {app.motivation.length > 200 
+                                ? `${app.motivation.substring(0, 200)}...` 
+                                : app.motivation}
+                            </p>
+                            {app.motivation.length > 200 && (
+                              <button 
+                                className={styles.readMoreBtn}
+                                onClick={() => setSelectedApplication(app)}
+                              >
+                                Читать полностью
+                              </button>
+                            )}
+                          </div>
+                        )}
+
+                        <div className={styles.applicationFooter}>
+                          {app.resume_path && (
+                            <a 
+                              href={`/api/v1/admin/applications/${app.id}/resume`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={styles.resumeLink}
+                            >
+                              📎 Скачать резюме
+                            </a>
+                          )}
+                          <Button 
+                            variant="secondary" 
+                            size="small"
+                            onClick={() => setSelectedApplication(app)}
+                          >
+                            Подробнее
+                          </Button>
+                        </div>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
               )}
             </motion.div>
           )}
@@ -298,7 +448,7 @@ function AdminDashboard() {
                     ) : (
                       <div className={styles.prizeView}>
                         <div className={styles.prizeInfo}>
-                          <div className={styles.prizePoints}>{prize.points} ⭐</div>
+                          <div className={styles.prizePoints}>{prize.points} <img src={raccoonIcon} alt="" className={styles.raccoonIcon} /></div>
                           <div>
                             <h4 className={styles.prizeName}>{prize.name}</h4>
                             <p className={styles.prizeDescription}>{prize.description}</p>
@@ -311,7 +461,7 @@ function AdminDashboard() {
                           </div>
                         </div>
                         <div className={styles.prizeActions}>
-                          <Button variant="ghost" size="small" onClick={() => setEditingPrize(prize)}>
+                          <Button variant="secondary" size="small" onClick={() => setEditingPrize(prize)}>
                             ✏️ Редактировать
                           </Button>
                           <Button variant="danger" size="small" onClick={() => removePrize(prize.id)}>
@@ -371,6 +521,77 @@ function AdminDashboard() {
             Добавить
           </Button>
         </div>
+      </Modal>
+
+      {/* Модальное окно просмотра заявки */}
+      <Modal
+        isOpen={!!selectedApplication}
+        onClose={() => setSelectedApplication(null)}
+        title="Детали заявки"
+      >
+        {selectedApplication && (
+          <div className={styles.applicationModal}>
+            <div className={styles.modalSection}>
+              <h4 className={styles.modalLabel}>ФИО</h4>
+              <p className={styles.modalValue}>{selectedApplication.full_name}</p>
+            </div>
+            
+            <div className={styles.modalSection}>
+              <h4 className={styles.modalLabel}>Направление</h4>
+              <p className={styles.modalValue}>
+                <span className={`${styles.directionBadge} ${styles[selectedApplication.direction]}`}>
+                  {selectedApplication.direction === 'developer' ? '💻 Разработчик' : '🎨 Дизайнер'}
+                </span>
+              </p>
+            </div>
+
+            <div className={styles.modalRow}>
+              <div className={styles.modalSection}>
+                <h4 className={styles.modalLabel}>Email</h4>
+                <p className={styles.modalValue}>
+                  <a href={`mailto:${selectedApplication.email}`}>{selectedApplication.email}</a>
+                </p>
+              </div>
+              <div className={styles.modalSection}>
+                <h4 className={styles.modalLabel}>Телефон</h4>
+                <p className={styles.modalValue}>
+                  <a href={`tel:${selectedApplication.phone}`}>{selectedApplication.phone}</a>
+                </p>
+              </div>
+            </div>
+
+            {selectedApplication.motivation && (
+              <div className={styles.modalSection}>
+                <h4 className={styles.modalLabel}>Мотивация</h4>
+                <p className={styles.modalValueLong}>{selectedApplication.motivation}</p>
+              </div>
+            )}
+
+            <div className={styles.modalSection}>
+              <h4 className={styles.modalLabel}>Дата подачи</h4>
+              <p className={styles.modalValue}>
+                {new Date(selectedApplication.created_at).toLocaleString('ru-RU', {
+                  day: '2-digit',
+                  month: 'long',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </p>
+            </div>
+
+            {selectedApplication.resume_path && (
+              <a 
+                href={`/api/v1/admin/applications/${selectedApplication.id}/resume`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.downloadResumeBtn}
+              >
+                📎 Скачать резюме
+              </a>
+            )}
+          </div>
+        )}
       </Modal>
     </div>
   )

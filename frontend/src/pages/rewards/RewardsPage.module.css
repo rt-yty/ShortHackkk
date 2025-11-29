@@ -40,7 +40,9 @@
 }
 
 .pointsIcon {
-  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
 }
 
 .pointsInfo {
@@ -385,6 +387,124 @@
 
 .earnPoints {
   font-size: var(--font-size-sm);
-  color: var(--color-points);
+  color: var(--color-white);
   font-weight: var(--font-weight-semibold);
+  background: var(--color-points);
+  padding: 2px var(--spacing-sm);
+  border-radius: var(--radius-full);
+  width: fit-content;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .page {
+    padding: var(--spacing-md) var(--spacing-sm);
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .header {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .subtitle {
+    font-size: var(--font-size-base);
+  }
+
+  .pointsCard {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .pointsDisplay {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+
+  .pointsIcon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .pointsValue {
+    font-size: var(--font-size-3xl);
+  }
+
+  .prizesGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .prizeHeader {
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .confirmModal {
+    gap: var(--spacing-md);
+  }
+
+  .confirmPrizeInfo {
+    padding: var(--spacing-md);
+  }
+
+  .confirmCost,
+  .confirmBalance {
+    padding: var(--spacing-sm);
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: var(--spacing-sm);
+  }
+
+  .title {
+    font-size: var(--font-size-xl);
+  }
+
+  .subtitle {
+    font-size: var(--font-size-sm);
+  }
+
+  .pointsDisplay {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .prizePoints {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .prizePointsValue {
+    font-size: var(--font-size-xl);
+  }
+
+  .prizeName {
+    font-size: var(--font-size-base);
+  }
+
+  .prizeDescription {
+    font-size: var(--font-size-xs);
+  }
+
+  .earnMethod {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--spacing-sm);
+  }
+
+  .howToEarnTitle {
+    font-size: var(--font-size-lg);
+  }
 }

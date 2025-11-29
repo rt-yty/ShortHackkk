@@ -7,7 +7,54 @@ import Button from '../../components/ui/Button'
 import styles from './BugCatcherGame.module.css'
 
 const GAME_DURATION = 30
-const BUG_EMOJIS = ['🐛', '🐜', '🪲', '🦗', '🕷️']
+const X5_CHANCE = 0.12 // 12% шанс X5 логотипа
+const BUG_SPEED_MIN = 2.5 // минимальная скорость пересечения экрана (сек)
+const BUG_SPEED_MAX = 4.5 // максимальная скорость
+
+// Отдельный компонент жука с CSS анимацией
+function Bug({ bug, onCatch }) {
+  const [position, setPosition] = useState({ x: bug.startX, y: bug.startY })
+  const [caught, setCaught] = useState(false)
+  
+  useEffect(() => {
+    // Запускаем анимацию сразу после монтирования
+    const timer = requestAnimationFrame(() => {
+      setPosition({ x: bug.endX, y: bug.endY })
+    })
+    return () => cancelAnimationFrame(timer)
+  }, [bug.endX, bug.endY])
+  
+  const handleClick = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (!caught) {
+      setCaught(true)
+      onCatch(bug.id, bug.isX5)
+    }
+  }
+  
+  if (caught) return null
+  
+  return (
+    <button
+      className={`${styles.bug} ${bug.isX5 ? styles.bugX5 : styles.bugLadybug}`}
+      style={{
+        left: position.x,
+        top: position.y,
+        transform: `rotate(${bug.rotation}deg)`,
+        transition: `left ${bug.duration}s linear, top ${bug.duration}s linear`,
+      }}
+      onClick={handleClick}
+      onPointerDown={handleClick}
+    >
+      {bug.isX5 ? (
+        <span className={styles.x5Logo}>X5</span>
+      ) : (
+        '🐞'
+      )}
+    </button>
+  )
+}
 
 function BugCatcherGame() {
   const navigate = useNavigate()
@@ -18,7 +65,7 @@ function BugCatcherGame() {
   const [timeLeft, setTimeLeft] = useState(GAME_DURATION)
   const [score, setScore] = useState(0)
   const [bugs, setBugs] = useState([])
-  const [spawnRate, setSpawnRate] = useState(2000)
+  const [spawnRate, setSpawnRate] = useState(1200)
   const [earnedPoints, setEarnedPoints] = useState(0)
 
   // Redirect if already completed
@@ -33,25 +80,81 @@ function BugCatcherGame() {
     const area = gameAreaRef.current.getBoundingClientRect()
     const bugSize = 50
     
+    // Определяем тип: божья коровка или X5
+    const isX5 = Math.random() < X5_CHANCE
+    
+    // Выбираем случайную сторону для появления (0=left, 1=right, 2=top, 3=bottom)
+    const side = Math.floor(Math.random() * 4)
+    
+    let startX, startY, endX, endY, rotation
+    
+    // Вычисляем начальную и конечную позицию в зависимости от стороны
+    switch (side) {
+      case 0: // Слева направо
+        startX = -bugSize
+        startY = Math.random() * (area.height - bugSize)
+        endX = area.width + bugSize
+        endY = startY + (Math.random() - 0.5) * area.height * 0.8
+        break
+      case 1: // Справа налево
+        startX = area.width + bugSize
+        startY = Math.random() * (area.height - bugSize)
+        endX = -bugSize
+        endY = startY + (Math.random() - 0.5) * area.height * 0.8
+        break
+      case 2: // Сверху вниз
+        startX = Math.random() * (area.width - bugSize)
+        startY = -bugSize
+        endX = startX + (Math.random() - 0.5) * area.width * 0.8
+        endY = area.height + bugSize
+        break
+      case 3: // Снизу вверх
+        startX = Math.random() * (area.width - bugSize)
+        startY = area.height + bugSize
+        endX = startX + (Math.random() - 0.5) * area.width * 0.8
+        endY = -bugSize
+        break
+      default:
+        startX = -bugSize
+        startY = area.height / 2
+        endX = area.width + bugSize
+        endY = area.height / 2
+    }
+    
+    // Вычисляем угол поворота по направлению движения (в градусах)
+    // atan2 возвращает угол в радианах, конвертируем в градусы
+    // Добавляем 90° потому что эмодзи божьей коровки смотрит вверх по умолчанию
+    const deltaX = endX - startX
+    const deltaY = endY - startY
+    rotation = Math.atan2(deltaY, deltaX) * (180 / Math.PI) + 90
+    
+    // Случайная скорость пересечения
+    const duration = BUG_SPEED_MIN + Math.random() * (BUG_SPEED_MAX - BUG_SPEED_MIN)
+    
     const newBug = {
       id: Date.now() + Math.random(),
-      x: Math.random() * (area.width - bugSize),
-      y: Math.random() * (area.height - bugSize),
-      emoji: BUG_EMOJIS[Math.floor(Math.random() * BUG_EMOJIS.length)],
+      startX,
+      startY,
+      endX,
+      endY,
+      rotation,
+      duration,
+      isX5,
       createdAt: Date.now(),
     }
     
     setBugs(prev => [...prev, newBug])
     
-    // Remove bug after 3 seconds if not caught
+    // Удаляем жука после завершения анимации
     setTimeout(() => {
       setBugs(prev => prev.filter(bug => bug.id !== newBug.id))
-    }, 3000)
+    }, duration * 1000 + 100)
   }, [])
 
-  const catchBug = (bugId) => {
+  const catchBug = (bugId, isX5) => {
     setBugs(prev => prev.filter(bug => bug.id !== bugId))
-    setScore(prev => prev + 1)
+    // X5 даёт 5 очков, обычная божья коровка - 1
+    setScore(prev => prev + (isX5 ? 5 : 1))
   }
 
   const startGame = () => {
@@ -123,20 +226,20 @@ function BugCatcherGame() {
           className={styles.introContainer}
         >
           <Card variant="elevated" padding="large" className={styles.introCard}>
-            <div className={styles.introIcon}>🐛</div>
+            <div className={styles.introIcon}>🐞</div>
             <h1 className={styles.introTitle}>Bug Catcher</h1>
             <p className={styles.introDescription}>
-              Ловите баги! У вас 30 секунд, чтобы поймать как можно больше букашек. 
-              Кликайте по ним, пока они не исчезли!
+              Ловите божьих коровок! У вас 30 секунд, чтобы поймать как можно больше. 
+              Они быстро пробегают через экран — ловите их на лету!
             </p>
             
             <div className={styles.introRules}>
               <h3>Правила:</h3>
               <ul>
                 <li>🕐 Время игры: 30 секунд</li>
-                <li>👆 Кликайте по букашкам, чтобы поймать их</li>
-                <li>⚡ Со временем букашки появляются быстрее</li>
-                <li>⭐ +25 баллов за игру + бонус за пойманных</li>
+                <li>🐞 Кликайте по божьим коровкам — +1 очко</li>
+                <li>⭐ Ловите редкие логотипы <span className={styles.x5Badge}>X5</span> — бонус ×5!</li>
+                <li>⚡ Со временем насекомые появляются быстрее</li>
               </ul>
             </div>
 
@@ -161,7 +264,7 @@ function BugCatcherGame() {
             <div className={styles.introIcon}>🎉</div>
             <h1 className={styles.introTitle}>Отлично!</h1>
             <p className={styles.resultText}>
-              Вы поймали <span className={styles.scoreHighlight}>{score}</span> букашек!
+              Вы набрали <span className={styles.scoreHighlight}>{score}</span> очков!
             </p>
             
             <div className={styles.pointsEarned}>
@@ -192,7 +295,7 @@ function BugCatcherGame() {
             <span className={timeLeft <= 5 ? styles.timerDanger : ''}>{timeLeft}с</span>
           </div>
           <div className={styles.scoreDisplay}>
-            <span className={styles.scoreIcon}>🐛</span>
+            <span className={styles.scoreIcon}>🐞</span>
             <span>{score}</span>
           </div>
         </div>
@@ -202,17 +305,11 @@ function BugCatcherGame() {
           className={styles.gameArea}
         >
           {bugs.map(bug => (
-            <motion.button
-              key={bug.id}
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              exit={{ scale: 0 }}
-              className={styles.bug}
-              style={{ left: bug.x, top: bug.y }}
-              onClick={() => catchBug(bug.id)}
-            >
-              {bug.emoji}
-            </motion.button>
+            <Bug 
+              key={bug.id} 
+              bug={bug} 
+              onCatch={catchBug}
+            />
           ))}
         </div>
       </div>

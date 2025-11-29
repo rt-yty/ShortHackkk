@@ -151,29 +151,187 @@
 
 .bug {
   position: absolute;
-  width: 50px;
-  height: 50px;
-  font-size: 35px;
+  width: 55px;
+  height: 55px;
+  font-size: 40px;
   background: none;
   border: none;
   cursor: pointer;
-  transition: transform 0.1s;
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .bug:hover {
-  transform: scale(1.2);
+  filter: brightness(1.2) drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
 }
 
 .bug:active {
-  transform: scale(0.8);
+  filter: brightness(0.7);
+  opacity: 0.7;
+}
+
+.bugLadybug {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.bugX5 {
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+}
+
+.x5Logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  background: linear-gradient(135deg, #00a650 0%, #008040 100%);
+  color: white;
+  font-weight: 900;
+  font-size: 18px;
+  border-radius: 8px;
+  box-shadow: 
+    0 3px 10px rgba(0, 166, 80, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  animation: x5Glow 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes x5Glow {
+  0% { box-shadow: 0 3px 10px rgba(0, 166, 80, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+  100% { box-shadow: 0 3px 20px rgba(0, 166, 80, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 15px rgba(255, 215, 0, 0.6); }
+}
+
+.x5Badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  background: linear-gradient(135deg, #00a650 0%, #008040 100%);
+  color: white;
+  font-weight: 700;
+  font-size: 11px;
+  border-radius: 4px;
+  margin-left: 4px;
 }
 
 @media (max-width: 768px) {
+  .page {
+    padding: var(--spacing-md);
+  }
+
+  .introContainer,
+  .gameContainer {
+    max-width: 100%;
+  }
+
+  .introCard {
+    padding: var(--spacing-lg);
+  }
+
+  .introIcon {
+    font-size: 60px;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .introTitle {
+    font-size: var(--font-size-2xl);
+  }
+
+  .introDescription {
+    font-size: var(--font-size-sm);
+  }
+
+  .introRules {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .introRules h3 {
+    font-size: var(--font-size-sm);
+  }
+
+  .introRules li {
+    font-size: var(--font-size-xs);
+  }
+
   .gameArea {
-    height: 400px;
+    height: 350px;
+  }
+
+  .gameHeader {
+    padding: var(--spacing-sm);
+  }
+
+  .timer, .scoreDisplay {
+    font-size: var(--font-size-lg);
+    gap: var(--spacing-xs);
+  }
+
+  .timerIcon, .scoreIcon {
+    font-size: var(--font-size-base);
+  }
+
+  .bug {
+    width: 50px;
+    height: 50px;
+    font-size: 35px;
+  }
+
+  .x5Logo {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .resultText {
+    font-size: var(--font-size-lg);
+  }
+
+  .scoreHighlight {
+    font-size: var(--font-size-3xl);
+  }
+
+  .pointsEarned {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: var(--font-size-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: var(--spacing-sm);
+  }
+
+  .introIcon {
+    font-size: 50px;
+  }
+
+  .introTitle {
+    font-size: var(--font-size-xl);
+  }
+
+  .gameArea {
+    height: 300px;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+  }
+
+  .gameHeader {
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+
+  .bug {
+    width: 45px;
+    height: 45px;
+    font-size: 30px;
+  }
+
+  .x5Logo {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
   }
 }

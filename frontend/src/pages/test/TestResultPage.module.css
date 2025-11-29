@@ -89,3 +89,69 @@
   flex-direction: column;
   gap: var(--spacing-md);
 }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .page {
+    padding: var(--spacing-md);
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .emojiContainer {
+    width: 100px;
+    height: 100px;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .emoji {
+    font-size: 50px;
+  }
+
+  .title {
+    font-size: var(--font-size-base);
+  }
+
+  .resultTitle {
+    font-size: var(--font-size-2xl);
+  }
+
+  .description {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .pointsEarned {
+    padding: var(--spacing-xs) var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .totalPoints {
+    margin-bottom: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: var(--spacing-sm);
+  }
+
+  .emojiContainer {
+    width: 80px;
+    height: 80px;
+  }
+
+  .emoji {
+    font-size: 40px;
+  }
+
+  .resultTitle {
+    font-size: var(--font-size-xl);
+  }
+
+  .pointsText {
+    font-size: var(--font-size-sm);
+  }
+}

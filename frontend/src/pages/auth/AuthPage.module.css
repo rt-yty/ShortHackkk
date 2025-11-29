@@ -218,13 +218,19 @@
 
 .cardInner {
   padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .title {
   font-size: var(--font-size-base);
   color: var(--color-white);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
   font-weight: var(--font-weight-medium);
+  width: 264px;
+  text-align: left;
 }
 
 .subtitle {
@@ -237,7 +243,9 @@
 .form {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: var(--spacing-md);
+  width: 100%;
 }
 
 .inputGroup {
@@ -256,8 +264,10 @@
 .buttons {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: var(--spacing-sm);
   margin-top: var(--spacing-md);
+  width: 100%;
 }
 
 .buttons a {
@@ -326,6 +336,7 @@
   color: rgba(255, 255, 255, 0.7);
   font-size: var(--font-size-sm);
   text-align: center;
+  width: 100%;
 }
 
 .link {
@@ -362,6 +373,8 @@
   border-radius: var(--radius-sm);
   font-size: var(--font-size-sm);
   margin-bottom: var(--spacing-md);
+  width: 264px;
+  text-align: center;
 }
 
 .errorText {
@@ -369,6 +382,8 @@
   font-size: var(--font-size-xs);
   margin-top: 4px;
   display: block;
+  width: 264px;
+  text-align: left;
 }
 
 .inputError {
@@ -424,21 +439,95 @@
 }
 
 /* Responsive */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .page {
     padding: var(--spacing-md);
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .header {
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .logoIcon {
+    width: 38px;
+    height: 25px;
+  }
+
+  .logoText {
+    font-size: var(--font-size-base);
+  }
+
+  .cardInner {
+    padding: var(--spacing-lg);
+  }
+
+  .title {
+    font-size: var(--font-size-sm);
+  }
+
+  .decorImage1,
+  .decorImage2 {
+    opacity: 0.3;
+    transform: scale(0.6);
+  }
+
+  .decorImage3,
+  .decorImage4,
+  .decorImage5 {
+    display: none;
+  }
+
+  .shape1, .shape2, .shape3 {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: var(--spacing-sm);
+    align-items: flex-start;
+    padding-top: var(--spacing-xl);
   }
   
   .container {
     max-width: 100%;
   }
-  
+
+  .header {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-md);
+  }
+
+  .logoSeparator {
+    display: none;
+  }
+
+  .cardInner {
+    padding: var(--spacing-md);
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    padding: var(--spacing-md) var(--spacing-lg) !important;
+    font-size: var(--font-size-sm) !important;
+  }
+
+  .inputGroup {
+    gap: 4px;
+  }
+
   .decorImage1,
-  .decorImage2,
-  .decorImage3,
-  .decorImage4,
-  .decorImage5 {
-    opacity: 0.4;
-    transform: scale(0.7);
+  .decorImage2 {
+    opacity: 0.2;
+    transform: scale(0.5);
+  }
+
+  .crossword {
+    display: none;
   }
 }

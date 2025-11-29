@@ -128,21 +128,211 @@
   color: var(--color-white);
 }
 
+/* Mobile Actions (Points + Burger) */
+.mobileActions {
+  display: none;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.mobilePoints {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-full);
+}
+
+/* Burger Button */
+.burgerBtn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  padding: 10px;
+  transition: all var(--transition-fast);
+}
+
+.burgerBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.burgerLine {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background-color: var(--color-white);
+  border-radius: 2px;
+  transition: all var(--transition-fast);
+  transform-origin: center;
+}
+
+.burgerOpen .burgerLine:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.burgerOpen .burgerLine:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.burgerOpen .burgerLine:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile Overlay */
+.mobileOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+  z-index: var(--z-modal);
+}
+
+.overlayOpen {
+  opacity: 1;
+}
+
+/* Mobile Menu */
+.mobileMenu {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 85%;
+  max-width: 320px;
+  height: 100vh;
+  background: var(--color-primary);
+  z-index: calc(var(--z-modal) + 1);
+  flex-direction: column;
+  transition: right var(--transition-normal);
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.menuOpen {
+  right: 0;
+}
+
+.mobileMenuHeader {
+  padding: var(--spacing-xl) var(--spacing-lg);
+  background: var(--glass-bg);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.mobileUserEmail {
+  font-size: var(--font-size-sm);
+  color: rgba(255, 255, 255, 0.8);
+  display: block;
+  word-break: break-all;
+}
+
+.mobileNav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-lg);
+  gap: var(--spacing-sm);
+}
+
+.mobileNavLink {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  color: var(--color-white);
+  text-decoration: none;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.mobileNavLink:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-accent);
+}
+
+.mobileMenuFooter {
+  padding: var(--spacing-lg);
+  border-top: 1px solid var(--glass-border);
+}
+
+.mobileLogoutBtn {
+  width: 100%;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: rgba(220, 53, 69, 0.2);
+  border: 1px solid rgba(220, 53, 69, 0.5);
+  border-radius: var(--radius-md);
+  color: #ff6b6b;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.mobileLogoutBtn:hover {
+  background: rgba(220, 53, 69, 0.3);
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
   .container {
-    flex-wrap: wrap;
+    padding: var(--spacing-sm) var(--spacing-md);
   }
 
-  .nav {
-    order: 3;
-    width: 100%;
-    justify-content: center;
-    padding-top: var(--spacing-md);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: var(--spacing-md);
-  }
-
-  .userEmail {
+  .nav,
+  .userSection {
     display: none;
+  }
+
+  .mobileActions {
+    display: flex;
+  }
+
+  .mobileOverlay,
+  .mobileMenu {
+    display: flex;
+  }
+
+  .logoText {
+    font-size: var(--font-size-base);
+  }
+
+  .logoIcon {
+    width: 40px;
+    height: 26px;
+  }
+
+  .logoSeparator {
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
+  .logoText {
+    display: none;
+  }
+
+  .logoSeparator {
+    display: none;
+  }
+
+  .mobilePoints {
+    padding: var(--spacing-xs);
   }
 }

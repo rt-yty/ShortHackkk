@@ -3,15 +3,28 @@
   display: flex;
   flex-direction: column;
   background: var(--color-primary);
+  overflow-x: hidden;
 }
 
 .main {
   flex: 1;
   padding: 0;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 @media (min-width: 768px) {
   .main {
     padding: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .layout {
+    min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
+  }
+
+  .main {
+    padding-bottom: env(safe-area-inset-bottom, 0);
   }
 }

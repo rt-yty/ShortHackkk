@@ -63,3 +63,32 @@
 .clickable:active {
   transform: translateY(0);
 }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .padding-medium {
+    padding: var(--spacing-md);
+  }
+
+  .padding-large {
+    padding: var(--spacing-lg);
+  }
+
+  .card {
+    border-radius: var(--radius-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .padding-small {
+    padding: var(--spacing-sm);
+  }
+
+  .padding-medium {
+    padding: var(--spacing-sm);
+  }
+
+  .padding-large {
+    padding: var(--spacing-md);
+  }
+}

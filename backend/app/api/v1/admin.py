@@ -1,4 +1,6 @@
+from pathlib import Path
 from fastapi import APIRouter, HTTPException, status
+from fastapi.responses import FileResponse
 from sqlalchemy import select, func
 
 from app.api.deps import AsyncSessionDep, CurrentAdmin
@@ -107,6 +109,48 @@ async def get_applications(
         )
         for app, user in rows
     ]
+
+
+@router.get("/applications/{application_id}/resume")
+async def download_resume(
+    application_id: int,
+    current_admin: CurrentAdmin,
+    db: AsyncSessionDep
+):
+    """Download resume for a specific application."""
+    result = await db.execute(
+        select(Application).where(Application.id == application_id)
+    )
+    application = result.scalar_one_or_none()
+    
+    if not application:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Application not found"
+        )
+    
+    if not application.resume_path:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No resume uploaded for this application"
+        )
+    
+    file_path = Path(application.resume_path)
+    
+    if not file_path.exists():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Resume file not found"
+        )
+    
+    # Determine filename for download
+    filename = f"resume_{application.full_name.replace(' ', '_')}{file_path.suffix}"
+    
+    return FileResponse(
+        path=file_path,
+        filename=filename,
+        media_type="application/octet-stream"
+    )
 
 
 # ============== Event Settings ==============

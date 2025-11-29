@@ -167,7 +167,7 @@ function LoginPage() {
                     width: '264px',
                     height: '28px',
                     backgroundColor: '#c3eb91',
-                    color: 'rgba(5, 50, 10, 0.41)',
+                    color: '#05320a',
                     border: 'none',
                     borderRadius: '5px',
                     fontWeight: 'bold',

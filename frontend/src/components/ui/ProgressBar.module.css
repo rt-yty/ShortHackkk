@@ -12,12 +12,12 @@
 .label {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--color-black);
+  color: var(--color-white);
 }
 
 .value {
   font-size: var(--font-size-sm);
-  color: var(--color-gray-500);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .track {

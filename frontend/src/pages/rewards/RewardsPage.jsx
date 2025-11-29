@@ -8,6 +8,9 @@ import ProgressBar from '../../components/ui/ProgressBar'
 import Modal from '../../components/ui/Modal'
 import styles from './RewardsPage.module.css'
 
+// Raccoon icon from Figma
+const raccoonIcon = 'https://www.figma.com/api/mcp/asset/f7a133a4-fa94-4d0a-8969-4205924e62de'
+
 function RewardsPage() {
   const { points, claimedPrizes, claimPrize: userClaimPrize, loading } = useUserStore()
   const [prizes, setPrizes] = useState([])
@@ -105,7 +108,7 @@ function RewardsPage() {
         >
           <Card variant="primary" padding="large" className={styles.pointsCard}>
             <div className={styles.pointsDisplay}>
-              <span className={styles.pointsIcon}>⭐</span>
+              <img src={raccoonIcon} alt="" className={styles.pointsIcon} />
               <div className={styles.pointsInfo}>
                 <span className={styles.pointsLabel}>Ваши баллы</span>
                 <span className={styles.pointsValue}>{points}</span>
