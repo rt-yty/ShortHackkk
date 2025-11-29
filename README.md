@@ -410,37 +410,6 @@ docker-compose exec postgres psql -U postgres -d x5_career
 docker-compose --profile tools up -d
 ```
 
-### Backend
-
-```bash
-# Запустить тесты (если есть)
-pytest
-
-# Проверить линтером
-flake8 app/
-
-# Форматирование кода
-black app/
-isort app/
-```
-
-### Frontend
-
-```bash
-# Запустить dev-сервер
-npm run dev
-
-# Сборка для production
-npm run build
-
-# Линтинг
-npm run lint
-
-# Предпросмотр production сборки
-npm run preview
-```
-
----
 
 ## 📁 Структура проекта
 
@@ -544,11 +513,3 @@ ShortHackkk/
 ## 📝 Лицензия
 
 MIT License
-
-Copyright (c) 2024 X5 Tech
-
----
-
-<p align="center">
-  Сделано с ❤️ для <strong>X5 Tech Career Day</strong>
-</p>
