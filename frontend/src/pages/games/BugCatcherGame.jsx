@@ -272,11 +272,17 @@ function BugCatcherGame() {
               <span>+{earnedPoints || (25 + Math.min(Math.floor(score / 2), 25))} баллов</span>
             </div>
 
+            <div className={styles.applicationPromo}>
+              <p className={styles.promoText}>
+                🎯 Подайте заявку на стажировку и получите ещё <strong>+35 баллов</strong>!
+              </p>
+            </div>
+
             <div className={styles.actions}>
               <Button variant="primary" size="large" onClick={() => navigate('/application')}>
-                Продолжить
+                Подать заявку на стажировку
               </Button>
-              <Button variant="ghost" onClick={() => navigate('/dashboard')}>
+              <Button variant="outline" onClick={() => navigate('/dashboard')}>
                 На главную
               </Button>
             </div>

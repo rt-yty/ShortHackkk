@@ -54,6 +54,17 @@
   border-color: rgba(255, 255, 255, 0.5);
 }
 
+.outline {
+  background-color: transparent;
+  color: var(--color-text-dark);
+  border: 2px solid var(--color-primary);
+}
+
+.outline:hover:not(:disabled) {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
 .danger {
   background-color: var(--color-error);
   color: var(--color-white);

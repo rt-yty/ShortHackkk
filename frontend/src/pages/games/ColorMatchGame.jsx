@@ -6,36 +6,41 @@ import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import styles from './ColorMatchGame.module.css'
 
-// Цвета с необычными названиями (оттенки зеленого и другие)
+// Цвета с необычными названиями для дизайнеров
 const COLOR_ROUNDS = [
-  // Раунд 1 - Простой
+  // Раунд 1 - Зелёные оттенки и яркие
   {
     level: 1,
-    title: 'Раунд 1: Разминка',
+    title: 'Раунд 1: Зелёная палитра',
     colors: [
-      { name: 'Лазурный', hex: '#007FFF', description: 'Яркий синий' },
-      { name: 'Коралловый', hex: '#FF7F50', description: 'Оранжево-розовый' },
-      { name: 'Шартрез', hex: '#7FFF00', description: 'Желто-зеленый' },
+      { name: 'Цвет ёлки', hex: '#2A5C03', description: 'Тёмно-зелёный' },
+      { name: 'Вердепомовый', hex: '#34C924', description: 'Ярко-зелёный' },
+      { name: 'Гелиотроп', hex: '#DF73FF', description: 'Светло-фиолетовый' },
+      { name: 'Электрик', hex: '#7DF9FF', description: 'Голубой электрик' },
+      { name: 'Травяной', hex: '#5DA130', description: 'Средне-зелёный' },
     ],
   },
-  // Раунд 2 - Средний
+  // Раунд 2 - Розовые и синие оттенки
   {
     level: 2,
-    title: 'Раунд 2: Усложнение',
+    title: 'Раунд 2: Розово-синяя гамма',
     colors: [
-      { name: 'Селадон', hex: '#ACE1AF', description: 'Бледно-зеленый' },
-      { name: 'Фалунский красный', hex: '#801818', description: 'Тёмно-красный' },
-      { name: 'Глициния', hex: '#C9A0DC', description: 'Светло-фиолетовый' },
+      { name: 'Звёзды в шоке', hex: '#FF47CA', description: 'Ярко-розовый' },
+      { name: 'Азур', hex: '#007FFF', description: 'Яркий синий' },
+      { name: 'Синий-синий иней', hex: '#AFDAFC', description: 'Светло-голубой' },
+      { name: 'Фанданго', hex: '#B55489', description: 'Пурпурно-розовый' },
+      { name: 'Пюсовый', hex: '#CC8899', description: 'Грязно-розовый' },
     ],
   },
-  // Раунд 3 - Сложный
+  // Раунд 3 - Красные и серые
   {
     level: 3,
-    title: 'Раунд 3: Эксперт',
+    title: 'Раунд 3: Финальный аккорд',
     colors: [
-      { name: 'Синий Клейна', hex: '#002FA7', description: 'Глубокий синий' },
-      { name: 'Циннвальдит', hex: '#EBC2AF', description: 'Бежево-розовый' },
-      { name: 'Вердигри', hex: '#43B3AE', description: 'Сине-зеленый' },
+      { name: 'Сангина', hex: '#92000A', description: 'Тёмно-красный' },
+      { name: 'Телемагента', hex: '#CF3476', description: 'Розово-красный' },
+      { name: 'Гридеперлевый', hex: '#C7D0CC', description: 'Серо-жемчужный' },
+      { name: 'Ализариновый красный', hex: '#E52322', description: 'Ярко-красный' },
     ],
   },
 ]
@@ -121,7 +126,8 @@ function ColorMatchGame() {
       setSelectedName(null)
       
       // Check if round complete
-      if (newMatches.length === 3) {
+      const roundColorCount = COLOR_ROUNDS[currentRound].colors.length
+      if (newMatches.length === roundColorCount) {
         if (currentRound < COLOR_ROUNDS.length - 1) {
           setGameState('roundComplete')
         } else {
@@ -237,11 +243,17 @@ function ColorMatchGame() {
               <span>+{earnedPoints || (25 + Math.min(Math.floor(score / 2), 25))} баллов</span>
             </div>
 
+            <div className={styles.applicationPromo}>
+              <p className={styles.promoText}>
+                🎯 Подайте заявку на стажировку и получите ещё <strong>+35 баллов</strong>!
+              </p>
+            </div>
+
             <div className={styles.actions}>
               <Button variant="primary" size="large" onClick={() => navigate('/application')}>
-                Продолжить
+                Подать заявку на стажировку
               </Button>
-              <Button variant="ghost" onClick={() => navigate('/dashboard')}>
+              <Button variant="outline" onClick={() => navigate('/dashboard')}>
                 На главную
               </Button>
             </div>
@@ -320,7 +332,7 @@ function ColorMatchGame() {
           </div>
 
           <div className={styles.progress}>
-            <span>Найдено: {matches.length} / 3</span>
+            <span>Найдено: {matches.length} / {round.colors.length}</span>
           </div>
         </Card>
       </div>

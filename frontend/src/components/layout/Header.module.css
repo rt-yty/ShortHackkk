@@ -3,7 +3,7 @@
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
-  z-index: var(--z-dropdown);
+  z-index: var(--z-modal);
   border-bottom: 1px solid var(--glass-border);
 }
 
@@ -142,6 +142,8 @@
   background-color: rgba(255, 255, 255, 0.1);
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--radius-full);
+  position: relative;
+  z-index: 1;
 }
 
 /* Burger Button */
@@ -159,6 +161,9 @@
   cursor: pointer;
   padding: 10px;
   transition: all var(--transition-fast);
+  position: relative;
+  z-index: 10002;
+  pointer-events: auto;
 }
 
 .burgerBtn:hover {
@@ -196,7 +201,7 @@
   background: rgba(0, 0, 0, 0.5);
   opacity: 0;
   transition: opacity var(--transition-normal);
-  z-index: var(--z-modal);
+  z-index: 10000;
 }
 
 .overlayOpen {
@@ -213,7 +218,7 @@
   max-width: 320px;
   height: 100vh;
   background: var(--color-primary);
-  z-index: calc(var(--z-modal) + 1);
+  z-index: 10001;
   flex-direction: column;
   transition: right var(--transition-normal);
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);

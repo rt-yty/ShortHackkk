@@ -187,6 +187,10 @@
   margin-bottom: var(--spacing-lg);
 }
 
+.settingGroup label {
+  color: var(--color-text-dark);
+}
+
 .label {
   display: block;
   font-size: var(--font-size-sm);

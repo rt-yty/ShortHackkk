@@ -95,6 +95,24 @@
   font-size: var(--font-size-xl);
 }
 
+.applicationPromo {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.promoText {
+  color: var(--color-white);
+  font-size: var(--font-size-sm);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.promoText strong {
+  color: var(--color-accent);
+}
+
 .actions {
   display: flex;
   flex-direction: column;

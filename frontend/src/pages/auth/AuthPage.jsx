@@ -222,10 +222,6 @@ function AuthPage() {
         <Link to="/admin-login" className={styles.backLink}>
           Войти как администратор
         </Link>
-
-        <p className={styles.footer}>
-          © 2024 X5 Tech. Все права защищены.
-        </p>
       </motion.div>
     </div>
   )

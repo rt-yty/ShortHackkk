@@ -97,6 +97,24 @@
   margin-bottom: var(--spacing-xl);
 }
 
+.applicationPromo {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.promoText {
+  color: var(--color-white);
+  font-size: var(--font-size-sm);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.promoText strong {
+  color: var(--color-accent);
+}
+
 .pointsIcon {
   font-size: var(--font-size-xl);
 }
@@ -173,11 +191,11 @@
 .items {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
 }
 
 .colorBox {
-  height: 80px;
+  height: 60px;
   border-radius: var(--radius-lg);
   border: 3px solid transparent;
   cursor: pointer;
@@ -323,12 +341,16 @@
   }
 
   .colorBox {
-    height: 65px;
+    height: 55px;
   }
 
   .nameBox {
     padding: var(--spacing-sm) var(--spacing-md);
     font-size: var(--font-size-sm);
+  }
+
+  .items {
+    gap: var(--spacing-sm);
   }
 
   .resultText {
@@ -351,7 +373,11 @@
   }
   
   .colorBox {
-    height: 60px;
+    height: 50px;
+  }
+
+  .items {
+    gap: var(--spacing-xs);
   }
 }
 
@@ -374,7 +400,7 @@
   }
 
   .colorBox {
-    height: 55px;
+    height: 45px;
   }
 
   .nameBox {
@@ -384,5 +410,9 @@
 
   .checkmark {
     font-size: var(--font-size-xl);
+  }
+
+  .items {
+    gap: 6px;
   }
 }

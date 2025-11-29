@@ -30,6 +30,22 @@ function DashboardPage() {
   const sortedPrizes = [...prizes].sort((a, b) => a.points - b.points)
   const nextPrize = sortedPrizes.find(prize => prize.points > points)
 
+  // Определяем путь к игре: если направление не выбрано, идём на страницу выбора
+  const getGamePath = () => {
+    if (!testResult) {
+      return '/direction-select'
+    }
+    return testResult === 'developer' ? '/game/bug-catcher' : '/game/color-match'
+  }
+
+  // Описание игры в зависимости от выбранного направления
+  const getGameDescription = () => {
+    if (!testResult) {
+      return 'Выберите направление и сыграйте в мини-игру'
+    }
+    return testResult === 'developer' ? 'Bug-catcher - поймайте баги!' : 'Color Match - угадайте цвета!'
+  }
+
   const tasks = [
     {
       id: 'test',
@@ -45,14 +61,13 @@ function DashboardPage() {
     {
       id: 'game',
       title: 'Мини-игра',
-      description: testResult === 'developer' ? 'Bug-carcher - поймайте баги!' : 'Color Match - угадайте цвета!',
+      description: getGameDescription(),
       icon: taskIcons.game,
       emoji: '🎲',
       points: 25,
       completed: completedGame,
-      action: () => navigate(testResult === 'developer' ? '/game/bug-catcher' : '/game/color-match'),
+      action: () => navigate(getGamePath()),
       actionText: 'Играть',
-      disabled: !completedTest,
     },
     {
       id: 'application',
@@ -64,7 +79,6 @@ function DashboardPage() {
       completed: appliedForInternship,
       action: () => navigate('/application'),
       actionText: 'Подать',
-      disabled: !completedGame,
     },
   ]
 
@@ -93,17 +107,6 @@ function DashboardPage() {
       </div>
 
       <div className={styles.container}>
-        {/* Header */}
-        <motion.div 
-          className={styles.header}
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <img src={decorImages.x5Logo} alt="X5" className={styles.logoIcon} />
-          <div className={styles.logoSeparator}></div>
-          <span className={styles.logoText}>For students</span>
-        </motion.div>
-
         {/* Event name */}
         {eventName && (
           <motion.p 
@@ -180,9 +183,9 @@ function DashboardPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 + 0.3 }}
-                  className={`${styles.taskCard} ${task.completed ? styles.completed : ''} ${task.disabled ? styles.disabled : ''}`}
-                  onClick={() => !task.disabled && !task.completed && task.action()}
-                  style={{ cursor: task.disabled || task.completed ? 'default' : 'pointer' }}
+                  className={`${styles.taskCard} ${task.completed ? styles.completed : ''}`}
+                  onClick={() => !task.completed && task.action()}
+                  style={{ cursor: task.completed ? 'default' : 'pointer' }}
                 >
                   <img 
                     src={task.icon} 
