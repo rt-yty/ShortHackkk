@@ -1,0 +1,201 @@
+.page {
+  min-height: calc(100vh - 80px);
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.eventBadge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: var(--color-white);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-md);
+}
+
+.title {
+  font-size: var(--font-size-3xl);
+  color: var(--color-black);
+  margin-bottom: var(--spacing-sm);
+}
+
+.welcomeText {
+  color: var(--color-gray-500);
+  font-size: var(--font-size-lg);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr 1.5fr;
+  }
+}
+
+/* Progress Card */
+.progressCard {
+  height: fit-content;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.progressTitle {
+  font-size: var(--font-size-xl);
+  margin: 0;
+}
+
+.pointsBadge {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-full);
+}
+
+.pointsIcon {
+  font-size: var(--font-size-lg);
+}
+
+.pointsValue {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.nextPrize {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.nextPrize strong {
+  font-size: var(--font-size-base);
+}
+
+.nextPrizePoints {
+  opacity: 0.8;
+}
+
+/* Tasks Section */
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  color: var(--color-black);
+  margin-bottom: var(--spacing-lg);
+}
+
+.tasksList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.taskCard {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  transition: all var(--transition-normal);
+}
+
+.taskCard.completed {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+.taskCard.disabled {
+  opacity: 0.6;
+}
+
+.taskIcon {
+  font-size: 40px;
+  flex-shrink: 0;
+}
+
+.taskContent {
+  flex: 1;
+}
+
+.taskTitle {
+  font-size: var(--font-size-base);
+  color: var(--color-black);
+  margin-bottom: var(--spacing-xs);
+}
+
+.taskDescription {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-500);
+  margin-bottom: var(--spacing-xs);
+}
+
+.taskPoints {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.taskAction {
+  flex-shrink: 0;
+}
+
+.completedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background-color: var(--color-success);
+  color: var(--color-white);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Quick Actions */
+.quickActions {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .taskCard {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .taskAction {
+    width: 100%;
+  }
+
+  .taskAction button {
+    width: 100%;
+  }
+}
+
