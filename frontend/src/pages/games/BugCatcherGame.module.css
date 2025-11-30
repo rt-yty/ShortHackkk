@@ -92,7 +92,17 @@
 }
 
 .pointsIcon {
-  font-size: var(--font-size-xl);
+  width: 24px;
+  height: 24px;
+}
+
+.ruleIcon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 4px;
+  display: inline !important;
 }
 
 .applicationPromo {

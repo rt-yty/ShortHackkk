@@ -30,7 +30,7 @@ services:
       ACCESS_TOKEN_EXPIRE_MINUTES: 30
       REFRESH_TOKEN_EXPIRE_DAYS: 7
       DEBUG: "true"
-      CORS_ORIGINS: "http://localhost:5173,http://localhost:3000"
+      CORS_ORIGINS: "http://localhost:5173,http://localhost:3000,https://*.ngrok-free.app,https://*.ngrok.io"
       UPLOAD_DIR: /app/uploads
     volumes:
       - ./app:/app/app:ro

@@ -6,6 +6,8 @@ import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import styles from './BugCatcherGame.module.css'
 
+const raccoonIcon = 'https://www.figma.com/api/mcp/asset/f7a133a4-fa94-4d0a-8969-4205924e62de'
+
 const GAME_DURATION = 30
 const X5_CHANCE = 0.12 // 12% шанс X5 логотипа
 const BUG_SPEED_MIN = 2.5 // минимальная скорость пересечения экрана (сек)
@@ -61,18 +63,19 @@ function BugCatcherGame() {
   const { completedGame, completeGame, loading } = useUserStore()
   const gameAreaRef = useRef(null)
   
-  const [gameState, setGameState] = useState('intro') // intro, playing, finished
+  const [gameState, setGameState] = useState('intro') // intro, playing, finished, alreadyCompleted
   const [timeLeft, setTimeLeft] = useState(GAME_DURATION)
   const [score, setScore] = useState(0)
   const [bugs, setBugs] = useState([])
   const [spawnRate, setSpawnRate] = useState(1200)
   const [earnedPoints, setEarnedPoints] = useState(0)
 
-  // Redirect if already completed
-  if (completedGame && gameState === 'intro') {
-    navigate('/application')
-    return null
-  }
+  // Check if already completed on mount
+  useEffect(() => {
+    if (completedGame && gameState === 'intro') {
+      setGameState('alreadyCompleted')
+    }
+  }, [completedGame, gameState])
 
   const spawnBug = useCallback(() => {
     if (!gameAreaRef.current) return
@@ -217,6 +220,36 @@ function BugCatcherGame() {
     }
   }, [timeLeft, gameState])
 
+  if (gameState === 'alreadyCompleted') {
+    return (
+      <div className={styles.page}>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={styles.introContainer}
+        >
+          <Card variant="elevated" padding="large" className={styles.introCard}>
+            <div className={styles.introIcon}>✅</div>
+            <h1 className={styles.introTitle}>Игра уже пройдена!</h1>
+            <p className={styles.introDescription}>
+              Вы уже проходили мини-игру и получили за неё баллы. 
+              Повторное прохождение недоступно.
+            </p>
+            
+            <div className={styles.actions}>
+              <Button variant="primary" size="large" onClick={() => navigate('/dashboard')}>
+                Вернуться в главное меню
+              </Button>
+              <Button variant="outline" onClick={() => navigate('/application')}>
+                Подать заявку на стажировку
+              </Button>
+            </div>
+          </Card>
+        </motion.div>
+      </div>
+    )
+  }
+
   if (gameState === 'intro') {
     return (
       <div className={styles.page}>
@@ -238,7 +271,7 @@ function BugCatcherGame() {
               <ul>
                 <li>🕐 Время игры: 30 секунд</li>
                 <li>🐞 Кликайте по божьим коровкам — +1 очко</li>
-                <li>⭐ Ловите редкие логотипы <span className={styles.x5Badge}>X5</span> — бонус ×5!</li>
+                <li><img src={raccoonIcon} alt="" className={styles.ruleIcon} /> Ловите редкие логотипы <span className={styles.x5Badge}>X5</span> — бонус ×5!</li>
                 <li>⚡ Со временем насекомые появляются быстрее</li>
               </ul>
             </div>
@@ -268,7 +301,7 @@ function BugCatcherGame() {
             </p>
             
             <div className={styles.pointsEarned}>
-              <span className={styles.pointsIcon}>⭐</span>
+              <img src={raccoonIcon} alt="" className={styles.pointsIcon} />
               <span>+{earnedPoints || (25 + Math.min(Math.floor(score / 2), 25))} баллов</span>
             </div>
 

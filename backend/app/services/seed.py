@@ -69,6 +69,34 @@ DEFAULT_QUESTIONS = [
     },
 ]
 
+# Default prizes
+DEFAULT_PRIZES = [
+    {
+        "name": "Стикерпак X5 Tech",
+        "description": "Набор крутых стикеров с символикой X5 Tech для вашего ноутбука",
+        "points": 20,
+        "quantity": 50
+    },
+    {
+        "name": "Блокнот X5",
+        "description": "Стильный блокнот для записей и идей",
+        "points": 35,
+        "quantity": 30
+    },
+    {
+        "name": "Футболка X5 Tech",
+        "description": "Фирменная футболка с логотипом X5 Tech",
+        "points": 60,
+        "quantity": 20
+    },
+    {
+        "name": "Powerbank",
+        "description": "Портативное зарядное устройство 10000 mAh",
+        "points": 100,
+        "quantity": 10
+    },
+]
+
 
 async def seed_admin():
     """Create admin user if not exists."""
@@ -128,6 +156,23 @@ async def seed_event_settings():
             print("• Event settings already exist")
 
 
+async def seed_prizes():
+    """Seed default prizes."""
+    async with async_session_maker() as session:
+        # Check if prizes exist
+        result = await session.execute(select(Prize))
+        existing_prizes = result.scalars().all()
+        
+        if not existing_prizes:
+            for prize_data in DEFAULT_PRIZES:
+                prize = Prize(**prize_data)
+                session.add(prize)
+            await session.commit()
+            print(f"✓ {len(DEFAULT_PRIZES)} prizes created")
+        else:
+            print(f"• {len(existing_prizes)} prizes already exist")
+
+
 async def create_tables():
     """Create all tables if they don't exist."""
     async with engine.begin() as conn:
@@ -145,9 +190,7 @@ async def main():
     await seed_admin()
     await seed_questions()
     await seed_event_settings()
-    
-    # Призы НЕ добавляются автоматически - их должен добавить админ вручную
-    print("ℹ️  Призы не добавлены - добавьте их через админ-панель")
+    await seed_prizes()
     
     print("\n✅ Seeding completed!\n")
 

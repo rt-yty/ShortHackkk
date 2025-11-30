@@ -65,7 +65,8 @@
 }
 
 .pointsIcon {
-  font-size: var(--font-size-xl);
+  width: 24px;
+  height: 24px;
 }
 
 .actions {
@@ -199,7 +200,8 @@
 }
 
 .bonusIcon {
-  font-size: var(--font-size-base);
+  width: 20px;
+  height: 20px;
 }
 
 /* Mobile Responsive */

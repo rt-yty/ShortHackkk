@@ -426,6 +426,7 @@ function AdminDashboard() {
                     onChange={(e) => setEventName(e.target.value)}
                     placeholder="Введите название"
                     fullWidth
+                    dark
                   />
                 </div>
 
@@ -480,6 +481,7 @@ function AdminDashboard() {
                           value={editingPrize.name}
                           onChange={(e) => setEditingPrize({ ...editingPrize, name: e.target.value })}
                           fullWidth
+                          dark
                         />
                         <div className={styles.prizeEditRow}>
                           <Input
@@ -488,6 +490,7 @@ function AdminDashboard() {
                             value={editingPrize.points}
                             onChange={(e) => setEditingPrize({ ...editingPrize, points: parseInt(e.target.value) || 0 })}
                             fullWidth
+                            dark
                           />
                           <Input
                             label="Количество"
@@ -495,6 +498,7 @@ function AdminDashboard() {
                             value={editingPrize.quantity}
                             onChange={(e) => setEditingPrize({ ...editingPrize, quantity: parseInt(e.target.value) || 0 })}
                             fullWidth
+                            dark
                           />
                         </div>
                         <Input
@@ -502,6 +506,7 @@ function AdminDashboard() {
                           value={editingPrize.description}
                           onChange={(e) => setEditingPrize({ ...editingPrize, description: e.target.value })}
                           fullWidth
+                          dark
                         />
                         <div className={styles.prizeEditActions}>
                           <Button variant="primary" onClick={handleSavePrize}>
@@ -575,6 +580,7 @@ function AdminDashboard() {
                             value={editingQuestion.question}
                             onChange={(e) => setEditingQuestion({ ...editingQuestion, question: e.target.value })}
                             fullWidth
+                            dark
                           />
                           <div className={styles.optionsEdit}>
                             <div className={styles.optionRow}>
@@ -588,6 +594,7 @@ function AdminDashboard() {
                                   )
                                 })}
                                 fullWidth
+                                dark
                               />
                             </div>
                             <div className={styles.optionRow}>
@@ -601,6 +608,7 @@ function AdminDashboard() {
                                   )
                                 })}
                                 fullWidth
+                                dark
                               />
                             </div>
                           </div>
@@ -610,6 +618,7 @@ function AdminDashboard() {
                             value={editingQuestion.order}
                             onChange={(e) => setEditingQuestion({ ...editingQuestion, order: parseInt(e.target.value) || 0 })}
                             fullWidth
+                            dark
                           />
                           <div className={styles.prizeEditActions}>
                             <Button variant="primary" onClick={handleSaveQuestion}>
@@ -667,6 +676,7 @@ function AdminDashboard() {
             onChange={(e) => setNewPrize({ ...newPrize, name: e.target.value })}
             placeholder="Название приза"
             fullWidth
+            dark
           />
           <div className={styles.addPrizeRow}>
             <Input
@@ -676,6 +686,7 @@ function AdminDashboard() {
               onChange={(e) => setNewPrize({ ...newPrize, points: e.target.value })}
               placeholder="Кол-во баллов"
               fullWidth
+              dark
             />
             <Input
               label="Количество"
@@ -684,6 +695,7 @@ function AdminDashboard() {
               onChange={(e) => setNewPrize({ ...newPrize, quantity: e.target.value })}
               placeholder="Штук в наличии"
               fullWidth
+              dark
             />
           </div>
           <Input
@@ -692,6 +704,7 @@ function AdminDashboard() {
             onChange={(e) => setNewPrize({ ...newPrize, description: e.target.value })}
             placeholder="Описание приза"
             fullWidth
+            dark
           />
           <Button variant="primary" fullWidth onClick={handleAddPrize}>
             Добавить
@@ -711,6 +724,7 @@ function AdminDashboard() {
             onChange={(e) => setNewQuestion({ ...newQuestion, question: e.target.value })}
             placeholder="Введите вопрос"
             fullWidth
+            dark
           />
           <div className={styles.optionsForm}>
             <div className={styles.optionFormRow}>
@@ -726,6 +740,7 @@ function AdminDashboard() {
                 })}
                 placeholder="Вариант ответа"
                 fullWidth
+                dark
               />
             </div>
             <div className={styles.optionFormRow}>
@@ -741,6 +756,7 @@ function AdminDashboard() {
                 })}
                 placeholder="Вариант ответа"
                 fullWidth
+                dark
               />
             </div>
           </div>
@@ -751,6 +767,7 @@ function AdminDashboard() {
             onChange={(e) => setNewQuestion({ ...newQuestion, order: parseInt(e.target.value) || 0 })}
             placeholder="Порядок отображения"
             fullWidth
+            dark
           />
           <Button variant="primary" fullWidth onClick={handleAddQuestion}>
             Добавить вопрос

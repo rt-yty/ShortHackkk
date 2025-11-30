@@ -5,6 +5,8 @@ import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import styles from './TestResultPage.module.css'
 
+const raccoonIcon = 'https://www.figma.com/api/mcp/asset/f7a133a4-fa94-4d0a-8969-4205924e62de'
+
 function TestResultPage() {
   const navigate = useNavigate()
   const { testResult, points } = useUserStore()
@@ -65,7 +67,7 @@ function TestResultPage() {
             <p className={styles.description}>{result.description}</p>
 
             <div className={styles.pointsEarned}>
-              <span className={styles.pointsIcon}>⭐</span>
+              <img src={raccoonIcon} alt="" className={styles.pointsIcon} />
               <span className={styles.pointsText}>+15 баллов за прохождение теста!</span>
             </div>
 

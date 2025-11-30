@@ -151,6 +151,7 @@ function RewardsPage() {
             const isOutOfStock = prize.quantity === 0
             const canClaim = canAfford && !isClaimed && !isOutOfStock
             const isNext = nextAffordablePrize?.id === prize.id
+            const isUnavailable = !canAfford && !isClaimed && !isOutOfStock
             
             return (
               <motion.div
@@ -162,7 +163,7 @@ function RewardsPage() {
                 <Card
                   variant={isClaimed ? 'default' : 'outlined'}
                   padding="medium"
-                  className={`${styles.prizeCard} ${isClaimed ? styles.claimed : ''} ${canClaim ? styles.available : ''} ${isNext ? styles.next : ''} ${isOutOfStock ? styles.outOfStock : ''}`}
+                  className={`${styles.prizeCard} ${isClaimed ? styles.claimed : ''} ${canClaim ? styles.available : ''} ${isNext ? styles.next : ''} ${isOutOfStock ? styles.outOfStock : ''} ${isUnavailable ? styles.unavailable : ''}`}
                 >
                   <div className={styles.prizeHeader}>
                     <div className={styles.prizePoints}>
@@ -176,8 +177,10 @@ function RewardsPage() {
                       {isOutOfStock && !isClaimed && (
                         <span className={styles.outOfStockBadge}>Нет в наличии</span>
                       )}
-                      {isNext && !isClaimed && !isOutOfStock && (
-                        <span className={styles.nextBadge}>Следующий</span>
+                      {isUnavailable && (
+                        <span className={styles.unavailableBadge}>
+                          Ещё {prize.points - points} баллов
+                        </span>
                       )}
                       {canClaim && (
                         <span className={styles.availableBadge}>Доступно!</span>

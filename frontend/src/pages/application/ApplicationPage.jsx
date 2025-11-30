@@ -7,6 +7,8 @@ import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import styles from './ApplicationPage.module.css'
 
+const raccoonIcon = 'https://www.figma.com/api/mcp/asset/f7a133a4-fa94-4d0a-8969-4205924e62de'
+
 function ApplicationPage() {
   const navigate = useNavigate()
   const { appliedForInternship, submitApplication, testResult, loading, error, clearError } = useUserStore()
@@ -133,7 +135,7 @@ function ApplicationPage() {
             </p>
             
             <div className={styles.pointsEarned}>
-              <span className={styles.pointsIcon}>⭐</span>
+              <img src={raccoonIcon} alt="" className={styles.pointsIcon} />
               <span>+35 баллов за отправку заявки!</span>
             </div>
 
@@ -250,7 +252,7 @@ function ApplicationPage() {
 
               <div className={styles.submitSection}>
                 <div className={styles.bonusInfo}>
-                  <span className={styles.bonusIcon}>⭐</span>
+                  <img src={raccoonIcon} alt="" className={styles.bonusIcon} />
                   <span>+35 баллов за отправку заявки</span>
                 </div>
                 <Button type="submit" variant="primary" size="large" fullWidth disabled={loading}>

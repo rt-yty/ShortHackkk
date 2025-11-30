@@ -6,6 +6,7 @@ function Input({
   error,
   helperText,
   fullWidth = false,
+  dark = false,
   className = '',
   id,
   ...props
@@ -20,13 +21,24 @@ function Input({
 
   const inputClasses = [
     styles.input,
+    dark ? styles.inputDark : '',
     error ? styles.error : '',
+  ].filter(Boolean).join(' ')
+
+  const labelClasses = [
+    styles.label,
+    dark ? styles.labelDark : '',
+  ].filter(Boolean).join(' ')
+
+  const helperClasses = [
+    error ? styles.errorText : styles.helperText,
+    dark && !error ? styles.helperTextDark : '',
   ].filter(Boolean).join(' ')
 
   return (
     <div className={containerClasses}>
       {label && (
-        <label htmlFor={inputId} className={styles.label}>
+        <label htmlFor={inputId} className={labelClasses}>
           {label}
         </label>
       )}
@@ -37,7 +49,7 @@ function Input({
         {...props}
       />
       {(error || helperText) && (
-        <span className={error ? styles.errorText : styles.helperText}>
+        <span className={helperClasses}>
           {error || helperText}
         </span>
       )}

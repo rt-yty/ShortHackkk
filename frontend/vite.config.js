@@ -9,7 +9,9 @@ export default defineConfig({
     }
   },
   server: {
+    host: '0.0.0.0',     // Позволяет доступ извне (для ngrok)
     port: 5173,
+    allowedHosts: true,  // Разрешаем ВСЕ хосты (включая любые ngrok домены)
     // Proxy API запросов к бекенду
     proxy: {
       '/api': {

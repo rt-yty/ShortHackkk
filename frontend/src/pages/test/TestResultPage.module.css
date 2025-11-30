@@ -65,7 +65,8 @@
 }
 
 .pointsIcon {
-  font-size: var(--font-size-xl);
+  width: 24px;
+  height: 24px;
 }
 
 .pointsText {

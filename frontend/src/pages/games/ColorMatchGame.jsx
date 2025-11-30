@@ -6,6 +6,8 @@ import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import styles from './ColorMatchGame.module.css'
 
+const raccoonIcon = 'https://www.figma.com/api/mcp/asset/f7a133a4-fa94-4d0a-8969-4205924e62de'
+
 // Цвета с необычными названиями для дизайнеров
 const COLOR_ROUNDS = [
   // Раунд 1 - Зелёные оттенки и яркие
@@ -58,7 +60,7 @@ function ColorMatchGame() {
   const navigate = useNavigate()
   const { completedGame, completeGame, loading } = useUserStore()
   
-  const [gameState, setGameState] = useState('intro') // intro, playing, roundComplete, finished
+  const [gameState, setGameState] = useState('intro') // intro, playing, roundComplete, finished, alreadyCompleted
   const [currentRound, setCurrentRound] = useState(0)
   const [score, setScore] = useState(0)
   const [selectedColor, setSelectedColor] = useState(null)
@@ -71,11 +73,12 @@ function ColorMatchGame() {
   const [totalTime, setTotalTime] = useState(0)
   const [earnedPoints, setEarnedPoints] = useState(0)
 
-  // Redirect if already completed
-  if (completedGame && gameState === 'intro') {
-    navigate('/application')
-    return null
-  }
+  // Check if already completed on mount
+  useEffect(() => {
+    if (completedGame && gameState === 'intro') {
+      setGameState('alreadyCompleted')
+    }
+  }, [completedGame, gameState])
 
   const initRound = (roundIndex) => {
     const round = COLOR_ROUNDS[roundIndex]
@@ -161,6 +164,36 @@ function ColorMatchGame() {
     setGameState('playing')
   }
 
+  if (gameState === 'alreadyCompleted') {
+    return (
+      <div className={styles.page}>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={styles.introContainer}
+        >
+          <Card variant="elevated" padding="large" className={styles.introCard}>
+            <div className={styles.introIcon}>✅</div>
+            <h1 className={styles.introTitle}>Игра уже пройдена!</h1>
+            <p className={styles.introDescription}>
+              Вы уже проходили мини-игру и получили за неё баллы. 
+              Повторное прохождение недоступно.
+            </p>
+            
+            <div className={styles.actions}>
+              <Button variant="primary" size="large" onClick={() => navigate('/dashboard')}>
+                Вернуться в главное меню
+              </Button>
+              <Button variant="outline" onClick={() => navigate('/application')}>
+                Подать заявку на стажировку
+              </Button>
+            </div>
+          </Card>
+        </motion.div>
+      </div>
+    )
+  }
+
   if (gameState === 'intro') {
     return (
       <div className={styles.page}>
@@ -183,7 +216,7 @@ function ColorMatchGame() {
                 <li>🖱️ Кликните на цвет, затем на его название</li>
                 <li>✅ +10 баллов за правильную пару</li>
                 <li>❌ -2 балла за ошибку</li>
-                <li>⭐ +25 баллов за завершение + бонус</li>
+                <li><img src={raccoonIcon} alt="" className={styles.ruleIcon} /> +25 баллов за завершение + бонус</li>
               </ul>
             </div>
 
@@ -239,7 +272,7 @@ function ColorMatchGame() {
             </p>
             
             <div className={styles.pointsEarned}>
-              <span className={styles.pointsIcon}>⭐</span>
+              <img src={raccoonIcon} alt="" className={styles.pointsIcon} />
               <span>+{earnedPoints || (25 + Math.min(Math.floor(score / 2), 25))} баллов</span>
             </div>
 
@@ -271,7 +304,7 @@ function ColorMatchGame() {
         <div className={styles.gameHeader}>
           <h2 className={styles.roundTitle}>{round.title}</h2>
           <div className={styles.scoreDisplay}>
-            <span className={styles.scoreIcon}>⭐</span>
+            <img src={raccoonIcon} alt="" className={styles.scoreIcon} />
             <span>{score}</span>
           </div>
         </div>
